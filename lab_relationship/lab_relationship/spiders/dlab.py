@@ -11,6 +11,7 @@ import csv
 # TODO: aggregate external links under one key (base url)
 # TODO: generalize to multiple websites
 # TODO: only collect external links on the list
+# TODO: set delay time
 
 class DlabSpider(CrawlSpider):
     name = "dlab"
