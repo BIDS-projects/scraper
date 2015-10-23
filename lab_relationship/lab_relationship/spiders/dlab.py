@@ -29,21 +29,14 @@ class DlabSpider(scrapy.Spider):
                 # don-han.com
                 row = next(reader)
                 seed_url = row[1].strip()
+                netloc = urlparse(seed_url).netloc
+                self.mapping[netloc] = set()
                 #item = Links(base_url=seed_url, on_list=[], off_list=[])
-                self.mapping[seed_url] = []
                 request = Request(seed_url, callback=self.parse_seed)
-                request.meta['item'] = item
-                requests.append(request)
-            return requests
+                request.meta['netloc'] = netloc
+                #requests.append(request)
+                yield request
                 # amplab
-            if False:
-                row = next(reader)
-                seed_url = row[1].strip()
-                item = Links(base_url=seed_url, on_list=[], off_list=[])
-                request = Request(seed_url, callback=self.parse_seed)
-                request.meta['item'] = item
-                requests.append(request)
-            return requests
             # yield request
                 #for row in reader:
                     #seed_url = row[1]
@@ -57,13 +50,13 @@ class DlabSpider(scrapy.Spider):
 
     def parse_seed(self, response):
         self.logger.info("@@@@@ WE ARE HERE @@@@@@")
-        item = response.meta['item']
-        netloc = urlparse(item['base_url']).netloc
+        netloc = response.meta['netloc']
         external_le = LinkExtractor(deny_domains=netloc)
         external_links = external_le.extract_links(response)
         for external_link in external_links:
             # if the url on the list
-            item['on_list'].append(external_link)
+            self.mapping[netloc].add(external_link.url)
+        self.logger.info("@@@@@{}@@@@@".format(self.mapping))
 
         internal_le = LinkExtractor(allow_domains=netloc)
         internal_links = internal_le.extract_links(response)
@@ -71,17 +64,5 @@ class DlabSpider(scrapy.Spider):
         for internal_link in internal_links:
             self.logger.info("@@@@@@@@: {}".format(internal_link.url))
             request = Request(internal_link.url, callback=self.parse_seed)
-            request.meta['item'] = item
+            request.meta['netloc'] = netloc
             yield request
-
-    """
-    def parse_url(self, response):
-        external_le = LinkExtractor(deny_domains="dlab.berkeley.edu")
-        external_links = external_le.extract_links(response)
-        item = Links()
-        item['url'] = response.url
-        item['on_list'] = []
-        for link in external_links:
-            item['on_list'].append(link.url)
-        yield item
-    """
