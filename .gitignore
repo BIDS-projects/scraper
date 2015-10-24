@@ -1,5 +1,5 @@
 *.org
-venv/
 *.pyc
 *.json
 *.csv
+venv/
