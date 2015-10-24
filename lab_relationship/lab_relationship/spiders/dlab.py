@@ -23,7 +23,6 @@ class MappingItem(dict, BaseItem):
 class DlabSpider(scrapy.Spider):
     name = "dlab"
     def __init__(self):
-        #self.mapping = dict()
         item = MappingItem()
         self.loader = ItemLoader(item)
 
@@ -70,16 +69,13 @@ class DlabSpider(scrapy.Spider):
         external_le = LinkExtractor(deny_domains=base_url)
         external_links = external_le.extract_links(response)
         for external_link in external_links:
-            # if the url on the list
+            #TODO: if the url on the list
             self.loader.add_value(base_url, external_link.url)
 
         internal_le = LinkExtractor(allow_domains=base_url)
         internal_links = internal_le.extract_links(response)
 
         for internal_link in internal_links:
-            #with open("redirect_issue", "a") as f:
-                #f.write("\tINTERNAL LINK: {}\n".format(internal_link.url))
-            #self.logger.info("@@@@: {}".format(internal_link.url))
             request = Request(internal_link.url, callback=self.parse_seed)
             request.meta['base_url'] = base_url
             yield request
@@ -92,3 +88,4 @@ class DlabSpider(scrapy.Spider):
 
     def closed(self, reason):
         self.logger.info("@@@@: {}".format(self.loader.load_item()))
+        # TODO: Persist laoder into the JSON format
