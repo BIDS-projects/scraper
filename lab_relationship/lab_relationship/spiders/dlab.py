@@ -12,7 +12,6 @@ import json
 
 
 # PIPELINE: get a list of data science institutions and their websites -> crawl through each of the listed organization's internal links and aggregate external links -> perform analysis
-# TODO: generalize to multiple websites
 
 # REFERNCE: (http://stackoverflow.com/questions/5069416/scraping-data-without-having-to-explicitly-define-each-field-to-be-scraped)
 
@@ -22,6 +21,8 @@ class MappingItem(dict, BaseItem):
 
 class DlabSpider(scrapy.Spider):
     name = "dlab"
+    output_filename = "result.json"
+
     def __init__(self):
         item = MappingItem()
         self.loader = ItemLoader(item)
@@ -32,32 +33,30 @@ class DlabSpider(scrapy.Spider):
             with open(filename, 'r') as csv_file:
                 reader = csv.reader(csv_file)
                 header = next(reader)
-                requests = []
                 #### DEBUG ####
-
+                #requests = []
                 #row = next(reader)
                 #seed_url = row[1].strip()
                 #base_url = urlparse(seed_url).netloc
                 #request = Request(seed_url, callback=self.parse_seed)
                 #request.meta['base_url'] = base_url
                 #requests.append(request)
-                #return requests
-
-                row = next(reader)
-                seed_url = row[1].strip()
-                base_url = urlparse(seed_url).netloc
-                request = Request(seed_url, callback=self.parse_seed)
-                request.meta['base_url'] = base_url
-                requests.append(request)
-                return requests # FOR DEBUGGING PURPOSE
+#
+                #row = next(reader)
+                #seed_url = row[1].strip()
+                #base_url = urlparse(seed_url).netloc
+                #request = Request(seed_url, callback=self.parse_seed)
+                #request.meta['base_url'] = base_url
+                #requests.append(request)
+                #return requests # FOR DEBUGGING PURPOSE
                 #### DEBUG ####
 
-                #for row in reader:
-                #    seed_url = row[1].strip()
-                #    base_url = urlparse(seed_url).netloc
-                #    request = Request(seed_url, callback=self.parse_seed)
-                #    request.meta['base_url'] = base_url
-                #    yield request
+                for row in reader:
+                    seed_url = row[1].strip()
+                    base_url = urlparse(seed_url).netloc
+                    request = Request(seed_url, callback=self.parse_seed)
+                    request.meta['base_url'] = base_url
+                    yield request
         except IOError:
             raise CloseSpider("A list of websites are needed")
 
@@ -87,5 +86,8 @@ class DlabSpider(scrapy.Spider):
         pass
 
     def closed(self, reason):
-        self.logger.info("@@@@: {}".format(self.loader.load_item()))
-        # TODO: Persist laoder into the JSON format
+        output = self.loader.load_item()
+        self.logger.info("@@@@: {}".format(output))
+        with open(self.output_filename, 'w') as outfile:
+            json.dump(output, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+
