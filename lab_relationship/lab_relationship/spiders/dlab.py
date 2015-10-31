@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# PIPELINE: get a list of data science institutions and their websites -> crawl through each of the listed organization's internal links and aggregate external links -> perform analysis
 from urlparse import urlparse
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
@@ -10,11 +11,12 @@ import scrapy
 import csv
 import json
 
+# DYNAMIC ITEM REFERNCE: (http://stackoverflow.com/questions/5069416/scraping-data-without-having-to-explicitly-define-each-field-to-be-scraped)
+# Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
 
-# PIPELINE: get a list of data science institutions and their websites -> crawl through each of the listed organization's internal links and aggregate external links -> perform analysis
-
-# REFERNCE: (http://stackoverflow.com/questions/5069416/scraping-data-without-having-to-explicitly-define-each-field-to-be-scraped)
-
+# TODO: LIMIT THE NUMBER OF NODES (TOTAL 56, maybe around 10?)
+# TODO: fix the qb3 bug
+# TODO: Only store the external links that point to nodes already in the list
 
 class MappingItem(dict, BaseItem):
     pass
