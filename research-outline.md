@@ -16,12 +16,12 @@ science ecosystems between universities by automating the characterization proce
 ## data collection
 ### web-scraper
 - build Naive Bayes to filter out unncessary websites
-- collect enough information for data analysis stage
+- run the spider through cloud to collect enough information for data analysis stage
 
 ## data analysis
 ### LDA algorithm
-- build LDA 
-- AWS to improve performance
+- build LDA
+- use AWS to improve performance
 
 ## data visualization
 ### graph
