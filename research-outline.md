@@ -1,4 +1,4 @@
-### Research Proposal
+# Research Proposal
 
 Data science as a nascent academic field grows rapidly in many directions, and
 its understanding vastly differs depending on each individual and each
@@ -11,20 +11,20 @@ and improve research collaboration between data science institutions based on
 their strength and weakness. Furthermore, this project simplifies comparing data
 science ecosystems between universities by automating the characterization process.
 
-### TODOs
+# TODOs
 
 ## data collection
-# web-scraper
+### web-scraper
 - build Naive Bayes to filter out unncessary websites
 - collect enough information for data analysis stage
 
 ## data analysis
-# LDA algorithm
+### LDA algorithm
 - build LDA 
 - AWS to improve performance
 
 ## data visualization
-# graph
+### graph
 - use D3.js to visualize the ecosystem
   - each node represents a data science institution
     - color-coded to represent the type of data science institution
