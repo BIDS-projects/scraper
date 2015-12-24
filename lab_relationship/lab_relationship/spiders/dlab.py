@@ -30,8 +30,8 @@ class DlabSpider(scrapy.Spider):
         self.filter_urls = list()
 
     def start_requests(self):
-        #filename = "data-science-websites.csv"
-        filename = "debug.csv"
+        filename = "lab_relationship/data-science-websites.csv"
+        #filename = "debug.csv"
         try:
             with open(filename, 'r') as csv_file:
                 reader = csv.reader(csv_file)
