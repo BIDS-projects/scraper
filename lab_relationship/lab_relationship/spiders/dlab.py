@@ -20,6 +20,8 @@ import json
 class MappingItem(dict, BaseItem):
     pass
 
+import os
+
 class DlabSpider(scrapy.Spider):
     name = "dlab"
     output_filename = "result.json"
@@ -30,10 +32,12 @@ class DlabSpider(scrapy.Spider):
         self.filter_urls = list()
 
     def start_requests(self):
-        filename = "lab_relationship/data-science-websites.csv"
+        prefix = os.path.dirname(os.path.realpath(__file__))
+        filename = "data-science-websites.csv"
+        raise UserWarning(os.listdir(prefix))
         #filename = "debug.csv"
         try:
-            with open(filename, 'r') as csv_file:
+            with open(os.path.join(prefix, filename), 'r') as csv_file:
                 reader = csv.reader(csv_file)
                 header = next(reader)
                 for row in reader:
