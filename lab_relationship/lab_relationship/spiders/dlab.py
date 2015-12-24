@@ -20,7 +20,64 @@ import json
 class MappingItem(dict, BaseItem):
     pass
 
-import os
+# import os
+
+seed = """
+AMPLab, https://amplab.cs.berkeley.edu/
+Archaeological Research Facility (ARF), http://arf.berkeley.edu/
+Berkeley Atmospheric Sciences Center (BASC), http://www.atmos.berkeley.edu/
+Berkeley Center for Cosmological Physics, http://bccp.berkeley.edu/
+Berkeley Center for New Media, http://bcnm.berkeley.edu/
+Berkeley Initiative in Global Change Biology (BiGCB), http://globalchange.berkeley.edu/
+Berkeley KamLAND Group, http://kamland.lbl.gov/
+Berkeley Nanosciences and Nanoengineering Institute (BNNI), http://nano.berkeley.edu/welcome/welcome.html
+Berkeley Natural History Museums (BNHM), http://bnhm.berkeley.edu/
+Berkeley Research Computing, http://research-it.berkeley.edu/programs/berkeley-research-computing
+Berkeley Seismological Laboratory, http://seismo.berkeley.edu/
+BIDS, http://bids.berkeley.edu
+California Census Research Data Center (CCRDCs), http://www.ccrdc.ucla.edu/
+California Digital Library, http://www.cdlib.org/
+California Institute for Science and Innovation (QB3), http://www.qb3.org/
+Center for Causal Inference, http://igs.berkeley.edu/research/center-for-causal-inference
+Center for Computational Biology (CCB), http://qb3.berkeley.edu/ccb/
+Center for Long-Term Cybersecurity, http://www.ischool.berkeley.edu/cltc
+Center for Time Domain Informatics (CTDI), https://sites.google.com/site/cftdinfo/
+CITRIS , http://citris-uc.org/
+CollectionSpace, http://www.collectionspace.org/
+Computational Cognitive Science Lab, http://cocosci.berkeley.edu/
+Computational Cosmology Center (C³), http://crd.lbl.gov/groups-depts/computational-cosmology-center/
+Computational Genomics Resource Laboratory (CGRL), http://qb3.berkeley.edu/qb3/cgrl/
+Computational Research Division at the Berkeley Lab , http://crd.lbl.gov/
+DLab, http://dlab.berkeley.edu
+Electronic Cultural Atlas Initiative (ECAI), http://www.ecai.org/
+Energy Frontier Research Center (EFRC), http://www.cchem.berkeley.edu/co2efrc/
+Experimental Social Science Laboratory (XLab), http://xlab.berkeley.edu/
+Geospatial Innovation Facility, http://gif.berkeley.edu/
+Geospatial Innovation Facility (GIF), http://gif.berkeley.edu/
+Helen Wills Neuroscience Institute, http://neuroscience.berkeley.edu/
+Henry H. Wheeler, Jr. Brain Imaging Center (BIC), http://bic.berkeley.edu/
+i4Energy Center, http://i4energy.org/
+Institute for Business Innovation, http://businessinnovation.berkeley.edu/data-science-strategy/
+Joint BioEnergy Institute (JBEI), http://www.jbei.org/
+Joint Genome Institute (JGI), http://www.jgi.doe.gov/
+Molecular Foundry, http://foundry.lbl.gov/
+NERSC, https://www.nersc.gov/
+Nuclear Science and Security Consortium (NSSC), http://nssc.berkeley.edu/
+Radio Astronomy Laboratory (RAL), http://vcresearch.berkeley.edu/research-unit/radio-astronomy-laboratory
+Redwood Center for Theoretical Neuroscience, http://redwood.berkeley.edu/
+Research IT, http://research-it.berkeley.edu/
+Scalable Data Management, Analysis, and Visualization (SDAV), http://www.sdav-scidac.org/
+SDAV, http://www.sdav-scidac.org/
+Simons Institute, http://simons.berkeley.edu/
+Space Sciences Laboratory (SSL), http://www.ssl.berkeley.edu/
+Synthetic Biology Engineering Research Center (SYNBERC), http://synberc.org/
+The Archaeological Research Facility, http://arf.berkeley.edu/
+The Electronic Cultural Atlas Initiative, http://www.ecai.org/
+Theoretical Astrophysics Center (TAC), http://astro.berkeley.edu/tac/
+Townsend Center for the Humanities, http://townsendcenter.berkeley.edu/
+Urban Analytics Lab, http://ual.berkeley.edu/
+UrbanSim, http://www.urbansim.org/Main/WebHome
+Visualization Group, http://vis.berkeley.edu/"""
 
 class DlabSpider(scrapy.Spider):
     name = "dlab"
@@ -32,22 +89,22 @@ class DlabSpider(scrapy.Spider):
         self.filter_urls = list()
 
     def start_requests(self):
-        prefix = os.path.dirname(os.path.realpath(__file__))
-        filename = "data-science-websites.csv"
-        raise UserWarning(os.listdir(prefix))
+        # prefix = os.path.dirname(os.path.realpath(__file__))
+        # filename = "data-science-websites.csv"
         #filename = "debug.csv"
         try:
-            with open(os.path.join(prefix, filename), 'r') as csv_file:
-                reader = csv.reader(csv_file)
-                header = next(reader)
-                for row in reader:
-                    seed_url = row[1].strip()
-                    base_url = urlparse(seed_url).netloc
-                    self.filter_urls.append(base_url)
-                    request = Request(seed_url, callback=self.parse_seed)
-                    request.meta['base_url'] = base_url
-                    #self.logger.info("'{}' REQUESTED".format(seed_url))
-                    yield request
+            reader = map(lambda x: x.split(','), seed.strip().split('\n'))
+            # with open(os.path.join(prefix, filename), 'r') as csv_file:
+            #     reader = csv.reader(csv_file)
+            #     header = next(reader)
+            for row in reader:
+                seed_url = row[1].strip()
+                base_url = urlparse(seed_url).netloc
+                self.filter_urls.append(base_url)
+                request = Request(seed_url, callback=self.parse_seed)
+                request.meta['base_url'] = base_url
+                #self.logger.info("'{}' REQUESTED".format(seed_url))
+                yield request
         except IOError:
             raise CloseSpider("A list of websites are needed")
 
