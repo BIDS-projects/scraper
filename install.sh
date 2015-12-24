@@ -2,16 +2,16 @@
 
 # install virtualenv
 check=`virtualenv --version`
-[ $? != 0 ] && sudo pip3 install virtualenv
+[ $? != 0 ] && sudo pip2.7 install virtualenv
 
 # check for virtualenv
-python3 -m venv env
+python2.7 -m virtualenv env
 
 # activate virtualenv
 source env/bin/activate
 
 # install
-pip3 install --upgrade pip
-pip3 install -r requirements.txt
+pip2.7 install --upgrade pip
+pip2.7 install -r requirements.txt
 
 echo "[OK] Installation complete."
