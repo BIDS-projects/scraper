@@ -1,7 +1,6 @@
 *.org
 *.pyc
 *.json
-*.csv
 venv/
 *results.json
 
