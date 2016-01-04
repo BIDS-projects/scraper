@@ -1,3 +1,6 @@
+# following line might need to be removed in future
+*setup.py
+
 *.org
 *.pyc
 *.json
