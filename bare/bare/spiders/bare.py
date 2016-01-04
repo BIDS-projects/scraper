@@ -82,7 +82,7 @@ Visualization Group, http://vis.berkeley.edu/"""
 class BareSpider(scrapy.Spider):
     name = "bare"
 
-    def __init__(self):
+    def __init__(self, *args):
         item = MappingItem()
         self.loader = ItemLoader(item)
         self.filter_urls = list()

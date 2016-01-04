@@ -4,7 +4,7 @@ check: check.sh
 install: install.sh
 	bash install.sh
 
-deploy:
+deploy: ${path}/*
 	source activate.sh && \
 		cd ${path} && \
 		shub deploy
