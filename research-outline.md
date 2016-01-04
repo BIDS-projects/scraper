@@ -11,7 +11,7 @@ and improve research collaboration between data science institutions based on
 their strength and weakness. Furthermore, this project simplifies comparing data
 science ecosystems between universities by automating the characterization process.
 
-# TODOs
+~~ # TODOs
 
 ## data collection
 ### web-scraper
@@ -32,3 +32,4 @@ science ecosystems between universities by automating the characterization proce
   - each link represent the collaboration between two institutions 
     - width of the link represent the strength of the tie 
     - lack of the link between two nodes should indicate the lack of collaboration
+    ~~
