@@ -22,6 +22,7 @@ class MappingItem(dict, BaseItem):
 
 import os
 
+
 class DlabSpider(scrapy.Spider):
     name = "dlab"
     output_filename = "result.json"
@@ -42,14 +43,14 @@ class DlabSpider(scrapy.Spider):
                     seed_url = row[1].strip()
                     base_url = urlparse(seed_url).netloc
                     self.filter_urls.append(base_url)
-                    request = Request(seed_url, callback=self.parse_seed)
+                    request = Request(seed_url, callback=self.parse)
                     request.meta['base_url'] = base_url
                     self.logger.info("'{}' REQUESTED".format(seed_url))
                     yield request
         except IOError:
             raise CloseSpider("A list of websites are needed")
 
-    def parse_seed(self, response):
+    def parse(self, response):
         self.logger.info("IN PARSE_SEED FOR {}".format(response.url))
         base_url = response.meta['base_url']
         # handle external redirect while still allowing internal redirect
@@ -65,7 +66,7 @@ class DlabSpider(scrapy.Spider):
         internal_links = internal_le.extract_links(response)
 
         for internal_link in internal_links:
-            request = Request(internal_link.url, callback=self.parse_seed)
+            request = Request(internal_link.url, callback=self.parse)
             request.meta['base_url'] = base_url
             request.meta['dont_redirect'] = True
             yield request

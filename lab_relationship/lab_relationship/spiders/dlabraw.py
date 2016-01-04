@@ -12,67 +12,65 @@ import scrapy
 import csv
 import json
 
-# DYNAMIC ITEM REFERNCE: (http://stackoverflow.com/questions/5069416/scraping-data-without-having-to-explicitly-define-each-field-to-be-scraped)
-# Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
-
-# TODO: fix the qb3 bug (if the seed url contains path, it fails)
-# TODO: exit if you are on one path for too long (amplab, jenkins)
 
 class MappingItem(dict, BaseItem):
     pass
 
 
-class BareSpider(scrapy.Spider):
-    name = "bare"
+class DLabRawSpider(scrapy.Spider):
+    name = "dlabraw"
 
     def __init__(self, *args):
-        item = MappingItem()
-        self.loader = ItemLoader(item)
-        self.filter_urls = list()
+        self.loader = ItemLoader(MappingItem())
+        self.filter_urls = []
 
     def start_requests(self):
-        try:
-            reader = map(lambda x: x.split(','), seed.strip().split('\n'))
-            for row in reader:
-                seed_url = row[1].strip()
-                base_url = urlparse(seed_url).netloc
-                self.filter_urls.append(base_url)
-                request = Request(seed_url, callback=self.parse)
-                request.meta['base_url'] = base_url
-                yield request
-        except IOError:
-            raise CloseSpider("A list of websites are needed")
-
-    def parse(self, response):
-
-        base_url = response.meta['base_url']
-        # handle external redirect while still allowing internal redirect
-        if urlparse(response.url).netloc != base_url:
-            return
-
-        data = vars(response).copy()
-        data['_body'] = str(data['_body'])
-        data['request'] = vars(data['request'])
-        yield data
-
-        self.parse_external_links(response)
-        internal_le = LinkExtractor(allow_domains=base_url)
-        internal_links = internal_le.extract_links(response)
-
-        for internal_link in internal_links:
-            request = Request(internal_link.url, callback=self.parse)
+        """Begin requests for DLab"""
+        reader = map(lambda x: x.split(','), seed.strip().split('\n'))
+        for _, seed_url in reader:
+            seed_url = seed_url.strip()
+            base_url = urlparse(seed_url).netloc
+            self.filter_urls.append(base_url)
+            request = Request(seed_url, callback=self.parse)
             request.meta['base_url'] = base_url
-            request.meta['dont_redirect'] = True
             yield request
 
-    def parse_external_links(self, response):
-        """Add external links to filter?"""
+    def parse(self, response):
+        """Parse response and yield both HTML and new requests"""
+
         base_url = response.meta['base_url']
-        external_le = LinkExtractor(deny_domains=base_url)
-        external_links = external_le.extract_links(response)
-        for external_link in external_links:
-            if urlparse(external_link.url).netloc in self.filter_urls:
-                self.loader.add_value(base_url, external_link.url)
+
+        # allow internal redirects
+        if urlparse(response.url).netloc == base_url:
+            yield self.parse_response(response)
+
+            # add external links to loader?
+            for link in self.parse_external_links(base_url, response):
+                self.loader.add_value(base_url, link.url)
+
+            # yield requests only for internal links
+            for link in self.parse_internal_links(base_url, response):
+                request = Request(link.url, callback=self.parse)
+                request.meta.update({'base_url':base_url, 'dont_redirect':True})
+                yield request
+
+    def parse_response(self, response):
+        """Get all data from a response object and return"""
+        data = vars(response).copy()
+        data.update({
+            '_body':str(data['_body']),
+            'request':vars(data['request'])
+        })
+        return data
+
+    def parse_external_links(self, base_url, response):
+        """Return external links using response"""
+        return filter(lambda link:urlparse(link.url).netloc in self.filter_urls,
+            LinkExtractor(deny_domains=base_url).extract_links(response))
+
+    def parse_internal_links(self, base_url, response):
+        """Return internal links using response"""
+        return LinkExtractor(allow_domains=base_url).extract_links(response)
 
 
 seed = """
