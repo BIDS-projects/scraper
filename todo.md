@@ -29,6 +29,9 @@ OR
     - visualization: Word cloud for each bucket 
     - performance: AWS EC2 instance (**Alvin**)
 
+# Misc.
+
+- Change the name of project from "lab_relationship" to "dsi-ecosystem-mapping" and the name of file from "dlab.py" to "web-data-collector.py" without changing the settings
 
 
 
