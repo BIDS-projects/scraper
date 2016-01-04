@@ -50,7 +50,10 @@ class BareSpider(scrapy.Spider):
         if urlparse(response.url).netloc != base_url:
             return
 
-        yield {'response': response }
+        data = vars(response).copy()
+        data['_body'] = str(data['_body'])
+        data['request'] = vars(data['request'])
+        yield data
 
         self.parse_external_links(response)
         internal_le = LinkExtractor(allow_domains=base_url)
@@ -70,12 +73,6 @@ class BareSpider(scrapy.Spider):
         for external_link in external_links:
             if urlparse(external_link.url).netloc in self.filter_urls:
                 self.loader.add_value(base_url, external_link.url)
-
-    def closed(self, reason):
-        output = self.loader.load_item()
-        self.logger.info("@@@@: {}".format(output))
-        with open(self.output_filename, 'w') as outfile:
-            json.dump(output, outfile, sort_keys=True, indent=4, separators=(',', ': '))
 
 
 seed = """
