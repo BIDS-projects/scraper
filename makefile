@@ -5,6 +5,6 @@ install: install.sh
 	bash install.sh
 
 deploy:
-	source activate.sh &
-		cd ${path} &
+	source activate.sh && \
+		cd ${path} && \
 		shub deploy
