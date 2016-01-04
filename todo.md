@@ -8,7 +8,7 @@
 
 # Data Cleansing:
 
-1. Remove irrelevant websites (Jenkins) -> Naive Bayes to filter based on words(**Don**)
+1. Remove irrelevant websites (Jenkins) -> Naive Bayes to filter based on words (**Don**)
 OR
 2. Find the source of institution descriptions (very difficult) 
 
