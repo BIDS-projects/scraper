@@ -8,3 +8,8 @@ deploy: ${path}/*
 	source activate.sh && \
 		cd ${path} && \
 		shub deploy
+
+crawl: ${project}/*
+	source activate.sh && \
+	cd ${project} && \
+	scrapy crawl ${spider}

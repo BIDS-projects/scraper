@@ -7,6 +7,7 @@ from scrapy.http import Request
 from scrapy.item import BaseItem
 from scrapy.loader import ItemLoader
 from scrapy.exceptions import CloseSpider
+from scrapy.selector import HtmlXPathSelector
 import scrapy
 import csv
 import json
@@ -20,7 +21,62 @@ import json
 class MappingItem(dict, BaseItem):
     pass
 
-# import os
+
+class BareSpider(scrapy.Spider):
+    name = "bare"
+
+    def __init__(self, *args):
+        item = MappingItem()
+        self.loader = ItemLoader(item)
+        self.filter_urls = list()
+
+    def start_requests(self):
+        try:
+            reader = map(lambda x: x.split(','), seed.strip().split('\n'))
+            for row in reader:
+                seed_url = row[1].strip()
+                base_url = urlparse(seed_url).netloc
+                self.filter_urls.append(base_url)
+                request = Request(seed_url, callback=self.parse)
+                request.meta['base_url'] = base_url
+                yield request
+        except IOError:
+            raise CloseSpider("A list of websites are needed")
+
+    def parse(self, response):
+
+        base_url = response.meta['base_url']
+        # handle external redirect while still allowing internal redirect
+        if urlparse(response.url).netloc != base_url:
+            return
+
+        yield {'response': response }
+
+        self.parse_external_links(response)
+        internal_le = LinkExtractor(allow_domains=base_url)
+        internal_links = internal_le.extract_links(response)
+
+        for internal_link in internal_links:
+            request = Request(internal_link.url, callback=self.parse)
+            request.meta['base_url'] = base_url
+            request.meta['dont_redirect'] = True
+            yield request
+
+    def parse_external_links(self, response):
+        """Add external links to filter?"""
+        base_url = response.meta['base_url']
+        external_le = LinkExtractor(deny_domains=base_url)
+        external_links = external_le.extract_links(response)
+        for external_link in external_links:
+            if urlparse(external_link.url).netloc in self.filter_urls:
+                self.loader.add_value(base_url, external_link.url)
+
+    def closed(self, reason):
+        output = self.loader.load_item()
+        self.logger.info("@@@@: {}".format(output))
+        with open(self.output_filename, 'w') as outfile:
+            json.dump(output, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+
 
 seed = """
 AMPLab, https://amplab.cs.berkeley.edu/
@@ -78,58 +134,3 @@ Townsend Center for the Humanities, http://townsendcenter.berkeley.edu/
 Urban Analytics Lab, http://ual.berkeley.edu/
 UrbanSim, http://www.urbansim.org/Main/WebHome
 Visualization Group, http://vis.berkeley.edu/"""
-
-class BareSpider(scrapy.Spider):
-    name = "bare"
-
-    def __init__(self, *args):
-        item = MappingItem()
-        self.loader = ItemLoader(item)
-        self.filter_urls = list()
-
-    def start_requests(self):
-        try:
-            reader = map(lambda x: x.split(','), seed.strip().split('\n'))
-            for row in reader:
-                seed_url = row[1].strip()
-                base_url = urlparse(seed_url).netloc
-                self.filter_urls.append(base_url)
-                request = Request(seed_url, callback=self.parse_seed)
-                request.meta['base_url'] = base_url
-                #self.logger.info("'{}' REQUESTED".format(seed_url))
-                yield request
-        except IOError:
-            raise CloseSpider("A list of websites are needed")
-
-    def parse_seed(self, response):
-        #self.logger.info("IN PARSE_SEED FOR {}".format(response.url))
-        base_url = response.meta['base_url']
-        # handle external redirect while still allowing internal redirect
-        if urlparse(response.url).netloc != base_url:
-            return
-        external_le = LinkExtractor(deny_domains=base_url)
-        external_links = external_le.extract_links(response)
-        for external_link in external_links:
-            if urlparse(external_link.url).netloc in self.filter_urls:
-                self.loader.add_value(base_url, external_link.url)
-
-        internal_le = LinkExtractor(allow_domains=base_url)
-        internal_links = internal_le.extract_links(response)
-
-        for internal_link in internal_links:
-            request = Request(internal_link.url, callback=self.parse_seed)
-            request.meta['base_url'] = base_url
-            request.meta['dont_redirect'] = True
-            yield request
-
-    def get_external_links(self, base_url, response):
-        pass
-
-    def get_internal_links(self, base_url, response):
-        pass
-
-    def closed(self, reason):
-        output = self.loader.load_item()
-        self.logger.info("@@@@: {}".format(output))
-        with open(self.output_filename, 'w') as outfile:
-            json.dump(output, outfile, sort_keys=True, indent=4, separators=(',', ': '))
