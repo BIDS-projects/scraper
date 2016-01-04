@@ -25,7 +25,7 @@ OR
     - network analysis
 
 - For texts
-    - classification: build LDA (**Louie** and **Don**)
+    - classification: build LDA in Apache Spark (**Louie** and **Don**)
     - visualization: Word cloud for each bucket 
     - performance: AWS EC2 instance (**Alvin**)
 
