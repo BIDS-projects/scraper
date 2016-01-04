@@ -10,26 +10,3 @@ by observing what data science institutions do and by doing so, to coordinate
 and improve research collaboration between data science institutions based on
 their strength and weakness. Furthermore, this project simplifies comparing data
 science ecosystems between universities by automating the characterization process.
-
-~~ # TODOs
-
-## data collection
-### web-scraper
-- build Naive Bayes to filter out unncessary websites
-- run the spider through cloud to collect enough information for data analysis stage
-
-## data analysis
-### LDA algorithm
-- build LDA
-- use AWS to improve performance
-
-## data visualization
-### graph
-- use D3.js to visualize the ecosystem
-  - each node represents a data science institution
-    - color-coded to represent the type of data science institution
-    - size to represent the significance of institution
-  - each link represent the collaboration between two institutions 
-    - width of the link represent the strength of the tie 
-    - lack of the link between two nodes should indicate the lack of collaboration
-    ~~
