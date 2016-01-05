@@ -31,11 +31,11 @@ class DLabRawSpider(scrapy.Spider):
             seed_url = seed_url.strip()
             base_url = urlparse(seed_url).netloc
             self.filter_urls.append(base_url)
-            request = Request(seed_url, callback=self.parse)
+            request = Request(seed_url, callback=self.parse_seed)
             request.meta['base_url'] = base_url
             yield request
 
-    def parse(self, response):
+    def parse_seed(self, response):
         """Parse response and yield both HTML and new requests"""
 
         base_url = response.meta['base_url']
@@ -50,7 +50,7 @@ class DLabRawSpider(scrapy.Spider):
 
             # yield requests only for internal links
             for link in self.parse_internal_links(base_url, response):
-                request = Request(link.url, callback=self.parse)
+                request = Request(link.url, callback=self.parse_seed)
                 request.meta.update({'base_url':base_url, 'dont_redirect':True})
                 yield request
 
