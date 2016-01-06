@@ -10,18 +10,19 @@ from scrapy.exceptions import CloseSpider
 import scrapy
 import csv
 import json
+import os
 
 # DYNAMIC ITEM REFERNCE: (http://stackoverflow.com/questions/5069416/scraping-data-without-having-to-explicitly-define-each-field-to-be-scraped)
 # Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
 
+# TODOS IN THE ORDER OF PRIORITY
+# TODO: text aggregation
+# TODO: limit the nubmer of webpages visited
 # TODO: fix the qb3 bug (if the seed url contains path, it fails)
-# TODO: exit if you are on one path for too long (amplab, jenkins)
+# TODO: exit if you are on one path for too long (amplab, jenkins) OR Naive Bayes
 
 class MappingItem(dict, BaseItem):
     pass
-
-import os
-
 
 class DlabSpider(scrapy.Spider):
     name = "dlab"
