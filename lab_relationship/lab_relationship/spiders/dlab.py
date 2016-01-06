@@ -16,7 +16,6 @@ import os
 # Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
 
 # TODOS IN THE ORDER OF PRIORITY
-# TODO: text aggregation
 # TODO: limit the nubmer of webpages visited
 # TODO: fix the qb3 bug (if the seed url contains path, it fails)
 # TODO: exit if you are on one path for too long (amplab, jenkins) OR Naive Bayes
@@ -69,7 +68,7 @@ class DlabSpider(scrapy.Spider):
 
         # TODO: Texts need to be cleaned (remove things like u'\n    ', u'\n        \n  \n  \n      ')
         text = response.xpath("//text()").extract()
-        # TODO: Add to the correct database
+        # TODO: Add to the correct database (make sure to add under one base_url)
 
         internal_le = LinkExtractor(allow_domains=base_url)
         internal_links = internal_le.extract_links(response)
