@@ -22,6 +22,7 @@ class MappingItem(dict, BaseItem):
 
 import os
 
+
 class DlabSpider(scrapy.Spider):
     name = "dlab"
     output_filename = "result.json"
@@ -34,8 +35,6 @@ class DlabSpider(scrapy.Spider):
     def start_requests(self):
         prefix = os.path.dirname(os.path.realpath(__file__))
         filename = "data-science-websites.csv"
-        raise UserWarning(os.listdir(prefix))
-        #filename = "debug.csv"
         try:
             with open(os.path.join(prefix, filename), 'r') as csv_file:
                 reader = csv.reader(csv_file)
@@ -46,13 +45,13 @@ class DlabSpider(scrapy.Spider):
                     self.filter_urls.append(base_url)
                     request = Request(seed_url, callback=self.parse_seed)
                     request.meta['base_url'] = base_url
-                    #self.logger.info("'{}' REQUESTED".format(seed_url))
+                    self.logger.info("'{}' REQUESTED".format(seed_url))
                     yield request
         except IOError:
             raise CloseSpider("A list of websites are needed")
 
     def parse_seed(self, response):
-        #self.logger.info("IN PARSE_SEED FOR {}".format(response.url))
+        self.logger.info("IN PARSE_SEED FOR {}".format(response.url))
         base_url = response.meta['base_url']
         # handle external redirect while still allowing internal redirect
         if urlparse(response.url).netloc != base_url:
