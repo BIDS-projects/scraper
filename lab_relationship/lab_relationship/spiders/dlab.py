@@ -35,7 +35,8 @@ class DlabSpider(scrapy.Spider):
 
     def start_requests(self):
         prefix = os.path.dirname(os.path.realpath(__file__))
-        filename = "data-science-websites.csv"
+        #filename = "data-science-websites.csv"
+        filename = "debug.csv"
         try:
             with open(os.path.join(prefix, filename), 'r') as csv_file:
                 reader = csv.reader(csv_file)
@@ -57,11 +58,18 @@ class DlabSpider(scrapy.Spider):
         # handle external redirect while still allowing internal redirect
         if urlparse(response.url).netloc != base_url:
             return
+
+        # ADDING outbound hyperlinks
         external_le = LinkExtractor(deny_domains=base_url)
         external_links = external_le.extract_links(response)
         for external_link in external_links:
+            # filter_urls filters out external links that are not on the list
             if urlparse(external_link.url).netloc in self.filter_urls:
                 self.loader.add_value(base_url, external_link.url)
+
+        # TODO: Texts need to be cleaned (remove things like u'\n    ', u'\n        \n  \n  \n      ')
+        text = response.xpath("//text()").extract()
+        # TODO: Add to the correct database
 
         internal_le = LinkExtractor(allow_domains=base_url)
         internal_links = internal_le.extract_links(response)
