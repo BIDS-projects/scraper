@@ -31,7 +31,7 @@ class MappingItem(dict, BaseItem):
 class DlabSpider(scrapy.Spider):
     name = "dlab"
     output_filename = "result.json"
-    page_limit = 1
+    page_limit = 2
 
     def __init__(self):
         item = MappingItem()
@@ -42,7 +42,7 @@ class DlabSpider(scrapy.Spider):
     def start_requests(self):
         prefix = os.path.dirname(os.path.realpath(__file__))
         #filename = "data-science-websites.csv"
-        filename = "debug.csv"
+        filename = "1debug.csv"
         try:
             with open(os.path.join(prefix, filename), 'r') as csv_file:
                 reader = csv.reader(csv_file)
@@ -76,11 +76,8 @@ class DlabSpider(scrapy.Spider):
             if urlparse(external_link.url).netloc in self.filter_urls:
                 self.loader.add_value(base_url, external_link.url)
 
-        # TODO: find a text cleaning that removes style and script
-        ## http://stackoverflow.com/questions/4378502/xpath-return-all-non-blank-text-nodes-not-descendant-of-a-style-or-script
-        text = [len(x) for x in filter(None, [st.strip() for st in response.xpath("//body//text()").extract()])]
-        # TODO: Add to the correct database (make sure to add under one base_url)
-
+        text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
+        # TODO: Add text to the correct database (make sure to add under one base_url)
         internal_le = LinkExtractor(allow_domains=base_url)
         internal_links = internal_le.extract_links(response)
 
@@ -102,7 +99,7 @@ class DlabSpider(scrapy.Spider):
 
     def closed(self, reason):
         # remove
-        self.loader.add_value(None, self.requested_page_counter)
+        #self.loader.add_value(None, self.requested_page_counter)
         output = self.loader.load_item()
         self.logger.info("@@@@: {}".format(output))
         with open(self.output_filename, 'w') as outfile:
