@@ -16,14 +16,14 @@ import os
 # Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
 
 # TODOS IN THE ORDER OF PRIORITY
-# TODO: limit the nubmer of webpages visited
-## http://stackoverflow.com/questions/34452788/scrapy-linkextractor-limit-the-number-of-pages-crawled-per-url
-# TODO: introduce depth limit
+# TODO: improve text collection (clean)
 # TODO: store in the correct database
 ## MONGO DB integration: https://realpython.com/blog/python/web-scraping-and-crawling-with-scrapy-and-mongodb/
-# TODO: improve text collection (clean)
 # TODO: fix the qb3 bug (if the seed url contains path, it fails)
 # TODO: exit if you are on one path for too long (amplab, jenkins) OR Naive Bayes
+
+# Potential Things To Do
+# TODO: introduce depth limit 
 
 class MappingItem(dict, BaseItem):
     pass
@@ -31,7 +31,7 @@ class MappingItem(dict, BaseItem):
 class DlabSpider(scrapy.Spider):
     name = "dlab"
     output_filename = "result.json"
-    page_limit = 3
+    page_limit = 1
 
     def __init__(self):
         item = MappingItem()
@@ -70,15 +70,15 @@ class DlabSpider(scrapy.Spider):
         # adding outbound hyperlinks
         external_le = LinkExtractor(deny_domains=base_url)
         external_links = external_le.extract_links(response)
-        """
+
         for external_link in external_links:
             # filter_urls filters out external links that are not on the list
             if urlparse(external_link.url).netloc in self.filter_urls:
                 self.loader.add_value(base_url, external_link.url)
-        """
 
-        # TODO: Texts need to be cleaned (remove things like u'\n    ', u'\n        \n  \n  \n      ')
-        text = response.xpath("//text()").extract()
+        # TODO: find a text cleaning that removes style and script
+        ## http://stackoverflow.com/questions/4378502/xpath-return-all-non-blank-text-nodes-not-descendant-of-a-style-or-script
+        text = [len(x) for x in filter(None, [st.strip() for st in response.xpath("//body//text()").extract()])]
         # TODO: Add to the correct database (make sure to add under one base_url)
 
         internal_le = LinkExtractor(allow_domains=base_url)
