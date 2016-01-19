@@ -14,9 +14,7 @@ import os
 
 # DYNAMIC ITEM REFERNCE: (http://stackoverflow.com/questions/5069416/scraping-data-without-having-to-explicitly-define-each-field-to-be-scraped)
 # Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
-
 # TODOS IN THE ORDER OF PRIORITY
-# TODO: improve text collection (clean)
 # TODO: store in the correct database
 ## MONGO DB integration: https://realpython.com/blog/python/web-scraping-and-crawling-with-scrapy-and-mongodb/
 # TODO: fix the qb3 bug (if the seed url contains path, it fails)
@@ -30,12 +28,16 @@ class MappingItem(dict, BaseItem):
 
 class DlabSpider(scrapy.Spider):
     name = "dlab"
-    output_filename = "result.json"
+    link_filename = "links.json"
+    text_filename = "texts.json"
     page_limit = 2
 
     def __init__(self):
-        item = MappingItem()
-        self.loader = ItemLoader(item)
+        link_item = MappingItem()
+        self.link_loader = ItemLoader(link_item)
+        text_item = MappingItem()
+        self.text_loader = ItemLoader(text_item)
+
         self.filter_urls = list()
         self.requested_page_counter = dict()
 
@@ -74,10 +76,12 @@ class DlabSpider(scrapy.Spider):
         for external_link in external_links:
             # filter_urls filters out external links that are not on the list
             if urlparse(external_link.url).netloc in self.filter_urls:
-                self.loader.add_value(base_url, external_link.url)
+                self.link_loader.add_value(base_url, external_link.url)
 
         text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
         # TODO: Add text to the correct database (make sure to add under one base_url)
+        text = ' '.join(text)
+        self.text_loader.add_value(base_url, text)
         internal_le = LinkExtractor(allow_domains=base_url)
         internal_links = internal_le.extract_links(response)
 
@@ -98,9 +102,15 @@ class DlabSpider(scrapy.Spider):
         pass
 
     def closed(self, reason):
+        #pass
         # remove
-        #self.loader.add_value(None, self.requested_page_counter)
-        output = self.loader.load_item()
-        self.logger.info("@@@@: {}".format(output))
-        with open(self.output_filename, 'w') as outfile:
-            json.dump(output, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+        #self.link_loader.add_value(None, self.requested_page_counter)
+        link_output = self.link_loader.load_item()
+        #self.logger.info("@@@@: {}".format(output))
+        with open(self.link_filename, 'w') as outfile:
+            json.dump(link_output, outfile, sort_keys=True, indent=4, separators=(',', ': '))
+
+        text_output = self.text_loader.load_item()
+        #self.logger.info("@@@@: {}".format(output))
+        with open(self.text_filename, 'w') as outfile:
+            json.dump(text_output, outfile, sort_keys=True, indent=4, separators=(',', ': '))
