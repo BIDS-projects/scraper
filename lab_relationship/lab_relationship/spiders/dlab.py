@@ -30,7 +30,7 @@ class DlabSpider(scrapy.Spider):
     name = "dlab"
     link_filename = "links.json"
     text_filename = "texts.json"
-    page_limit = 2
+    page_limit = 10
 
     def __init__(self):
         link_item = MappingItem()
