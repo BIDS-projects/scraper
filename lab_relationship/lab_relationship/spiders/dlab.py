@@ -70,8 +70,7 @@ class DlabSpider(scrapy.Spider):
             return
 
         # adding outbound hyperlinks
-        external_le = LinkExtractor(deny_domains=base_url)
-        external_links = external_le.extract_links(response)
+        external_links = self.get_external_links(base_url, response)
 
         for external_link in external_links:
             # filter_urls filters out external links that are not on the list
@@ -82,10 +81,8 @@ class DlabSpider(scrapy.Spider):
         # TODO: Add text to the correct database (make sure to add under one base_url)
         text = ' '.join(text)
         self.text_loader.add_value(base_url, text)
-        internal_le = LinkExtractor(allow_domains=base_url)
-        internal_links = internal_le.extract_links(response)
 
-        for internal_link in internal_links:
+        for internal_link in self.get_internal_links(base_url, response):
             if self.requested_page_counter[base_url] >= self.page_limit:
                 break
             self.requested_page_counter[base_url] += 1
@@ -96,10 +93,10 @@ class DlabSpider(scrapy.Spider):
             yield request
 
     def get_external_links(self, base_url, response):
-        pass
+        return LinkExtractor(deny_domains=base_url).extract_links(response)
 
     def get_internal_links(self, base_url, response):
-        pass
+        return LinkExtractor(allow_domains=base_url).extract_links(response)
 
     def closed(self, reason):
         #pass
