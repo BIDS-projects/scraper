@@ -11,10 +11,12 @@ import scrapy
 import csv
 import json
 import os
+import datetime
 
 # DYNAMIC ITEM REFERNCE: (http://stackoverflow.com/questions/5069416/scraping-data-without-having-to-explicitly-define-each-field-to-be-scraped)
 # Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
 # TODOS IN THE ORDER OF PRIORITY
+
 # TODO: store in the correct database
 ## MONGO DB integration: https://realpython.com/blog/python/web-scraping-and-crawling-with-scrapy-and-mongodb/
 # TODO: fix the qb3 bug (if the seed url contains path, it fails)
@@ -23,20 +25,25 @@ import os
 # Potential Things To Do
 # TODO: introduce depth limit 
 
-class MappingItem(dict, BaseItem):
-    pass
+# Store different item into different collections in MongoDB
+# processing different item in one pipeline: https://github.com/scrapy/scrapy/issues/102
+class LinkItem(scrapy.Item):
+    base_url = scrapy.Field()
+    url = scrapy.Field()
+    link = scrapy.Field()
+    timestamp = scrapy.Field()
+
+class TextItem(scrapy.Item):
+    base_url = scrapy.Field()
+    url = scrapy.Field()
+    text = scrapy.Field()
+    timestamp = scrapy.Field()
 
 class DlabSpider(scrapy.Spider):
     name = "dlab"
-    link_filename = "links.json"
-    text_filename = "texts.json"
-    page_limit = 10
+    page_limit = 5
 
     def __init__(self):
-        link_item = MappingItem()
-        self.link_loader = ItemLoader(link_item)
-        text_item = MappingItem()
-        self.text_loader = ItemLoader(text_item)
 
         self.filter_urls = list()
         self.requested_page_counter = dict()
@@ -65,6 +72,7 @@ class DlabSpider(scrapy.Spider):
     def parse_seed(self, response):
         self.logger.info("PARSED LINK: {}".format(response.url))
         base_url = response.meta['base_url']
+
         # handle external redirect while still allowing internal redirect
         if urlparse(response.url).netloc != base_url:
             return
@@ -75,12 +83,21 @@ class DlabSpider(scrapy.Spider):
         for external_link in external_links:
             # filter_urls filters out external links that are not on the list
             if urlparse(external_link.url).netloc in self.filter_urls:
-                self.link_loader.add_value(base_url, external_link.url)
+                link_item = LinkItem()
+                link_item['base_url'] = base_url
+                link_item['url'] = response.url
+                link_item['link'] = external_link.url
+                yield link_item
 
-        text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
+        text =  ' '.join(filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()]))
         # TODO: Add text to the correct database (make sure to add under one base_url)
-        text = ' '.join(text)
-        self.text_loader.add_value(base_url, text)
+
+        text_item = TextItem()
+        text_item['base_url'] = base_url
+        text_item['url'] = response.url
+        text_item['text'] = text
+        yield text_item
+
 
         for internal_link in self.get_internal_links(base_url, response):
             if self.requested_page_counter[base_url] >= self.page_limit:
@@ -97,17 +114,3 @@ class DlabSpider(scrapy.Spider):
 
     def get_internal_links(self, base_url, response):
         return LinkExtractor(allow_domains=base_url).extract_links(response)
-
-    def closed(self, reason):
-        #pass
-        # remove
-        #self.link_loader.add_value(None, self.requested_page_counter)
-        link_output = self.link_loader.load_item()
-        #self.logger.info("@@@@: {}".format(output))
-        with open(self.link_filename, 'w') as outfile:
-            json.dump(link_output, outfile, sort_keys=True, indent=4, separators=(',', ': '))
-
-        text_output = self.text_loader.load_item()
-        #self.logger.info("@@@@: {}".format(output))
-        with open(self.text_filename, 'w') as outfile:
-            json.dump(text_output, outfile, sort_keys=True, indent=4, separators=(',', ': '))
