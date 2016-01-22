@@ -79,6 +79,7 @@ class DlabSpider(scrapy.Spider):
 
         text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
         text = ' '.join(text)
+        text = text.split()
 
         text_item = TextItem()
         text_item['base_url'] = base_url
