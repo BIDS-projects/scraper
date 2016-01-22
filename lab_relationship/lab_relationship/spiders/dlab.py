@@ -7,6 +7,7 @@ from scrapy.http import Request
 from scrapy.item import BaseItem
 from scrapy.loader import ItemLoader
 from scrapy.exceptions import CloseSpider
+from lab_relationship.items import LinkItem, TextItem
 import scrapy
 import csv
 import json
@@ -17,8 +18,6 @@ import datetime
 # Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
 # TODOS IN THE ORDER OF PRIORITY
 
-# TODO: store in the correct database
-## MONGO DB integration: https://realpython.com/blog/python/web-scraping-and-crawling-with-scrapy-and-mongodb/
 # TODO: fix the qb3 bug (if the seed url contains path, it fails)
 # TODO: exit if you are on one path for too long (amplab, jenkins) OR Naive Bayes
 
@@ -27,18 +26,6 @@ import datetime
 
 # Store different item into different collections in MongoDB
 # processing different item in one pipeline: https://github.com/scrapy/scrapy/issues/102
-class LinkItem(scrapy.Item):
-    base_url = scrapy.Field()
-    url = scrapy.Field()
-    link = scrapy.Field()
-    timestamp = scrapy.Field()
-
-class TextItem(scrapy.Item):
-    base_url = scrapy.Field()
-    url = scrapy.Field()
-    text = scrapy.Field()
-    timestamp = scrapy.Field()
-
 class DlabSpider(scrapy.Spider):
     name = "dlab"
     page_limit = 5
@@ -87,15 +74,17 @@ class DlabSpider(scrapy.Spider):
                 link_item['base_url'] = base_url
                 link_item['url'] = response.url
                 link_item['link'] = external_link.url
+                link_item['timestamp'] = datetime.datetime.now()
                 yield link_item
 
-        text =  ' '.join(filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()]))
-        # TODO: Add text to the correct database (make sure to add under one base_url)
+        text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
+        text = ' '.join(text)
 
         text_item = TextItem()
         text_item['base_url'] = base_url
         text_item['url'] = response.url
         text_item['text'] = text
+        text_item['timestamp'] = datetime.datetime.now()
         yield text_item
 
 

@@ -61,9 +61,16 @@ NEWSPIDER_MODULE = 'lab_relationship.spiders'
 
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
-#ITEM_PIPELINES = {
-#    'lab_relationship.pipelines.SomePipeline': 300,
-#}
+ITEM_PIPELINES = {
+    'lab_relationship.pipelines.MongoDBPipeline': 300,
+}
+
+# MongoDBPipeline setting
+MONGODB_SERVER = "localhost"
+MONGODB_PORT = 27017
+MONGODB_DB = "ecosystem_mapping"
+MONGODB_LINK_COLLECTION = "link_collection"
+MONGODB_TEXT_COLLECTION = "text_collection"
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
