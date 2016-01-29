@@ -18,3 +18,10 @@ def Base(__Base):
     created_at = db.Column(ArrowType, default=arrow.now('US/Pacific'))
     created_by = db.Column(db.Integer)
     is_active = db.Column(db.Boolean, default=True)
+
+    def save(self, db):
+        try:
+            db.session.add(self)
+            db.sessioncommit()
+        except:
+            db.session.rollback()
