@@ -5,7 +5,6 @@
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
-from pymongo import MongoClient
 from scrapy.conf import settings
 from items import LinkItem, TextItem
 
@@ -14,6 +13,9 @@ class MySQLPipeline(object):
 
     def __init__(self):
         """start connection to MySQL database"""
+        from sqlalchemy import create_engine
+        db = create_engine(
+            'mysql+pymsql://{MYSQL_USERNAME}:{MYSQL_PASSWORD}@{MYSQL_HOST}/{MYSQL_DATABASE}'.format(settings))
 
     def process_item(self, item, spider):
         """Process an item"""
@@ -23,6 +25,7 @@ class MongoDBPipeline(object):
     """Pipeline for saving to a MongoDB database"""
 
     def __init__(self):
+        from pymongo import MongoClient
         connection = MongoClient(
             settings['MONGODB_SERVER'],
             settings['MONGODB_PORT']

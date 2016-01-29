@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 
+import os
+
 # Scrapy settings for lab_relationship project
 #
 # For simplicity, this file contains only settings considered important or
@@ -65,12 +67,20 @@ ITEM_PIPELINES = {
     'lab_relationship.pipelines.MongoDBPipeline': 300,
 }
 
+get = lambda p, default: os.environ.get(p, default)
+
 # MongoDBPipeline setting
-MONGODB_SERVER = "localhost"
-MONGODB_PORT = 27017
-MONGODB_DB = "ecosystem_mapping"
-MONGODB_LINK_COLLECTION = "link_collection"
-MONGODB_TEXT_COLLECTION = "text_collection"
+MONGODB_SERVER              = get('MONGODB_SERVER', "localhost")
+MONGODB_PORT                = get('MONGODB_PORT', 27017)
+MONGODB_DB                  = get('MONGODB_DB', "ecosystem_mapping")
+MONGODB_LINK_COLLECTION     = get('MONGODB_LINK_COLLECTION', "link_collection")
+MONGODB_TEXT_COLLECTION     = get('MONGODB_TEXT_COLLECTION', "text_collection")
+
+# MySQLPipeline settings
+MYSQL_USERNAME              = get('MYSQL_USERNAME', 'root')
+MYSQL_PASSWORD              = get('MYSQL_PASSWORD', 'root')
+MYSQL_HOST                  = get('MYSQL_HOST', 'localhost')
+MYSQL_DATABASE              = get('MYSQL_DATABASE', 'ecosystem_mapping')
 
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
