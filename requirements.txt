@@ -1,2 +1,4 @@
 scrapy==1.0.3
 shub==1.5.0
+sqlalchemy
+sqlalchemy-utils
