@@ -9,7 +9,18 @@ from pymongo import MongoClient
 from scrapy.conf import settings
 from items import LinkItem, TextItem
 
+class MySQLPipeline(object):
+    """Pipeline for saving to a MySQL database"""
+
+    def __init__(self):
+        """start connection to MySQL database"""
+
+    def process_item(self, item, spider):
+        """Process an item"""
+        pass
+
 class MongoDBPipeline(object):
+    """Pipeline for saving to a MongoDB database"""
 
     def __init__(self):
         connection = MongoClient(
