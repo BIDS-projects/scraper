@@ -2,7 +2,7 @@
 
 import os
 
-# Scrapy settings for lab_relationship project
+# Scrapy settings for labs project
 #
 # For simplicity, this file contains only settings considered important or
 # commonly used. You can find more settings consulting the documentation:
@@ -18,7 +18,7 @@ NEWSPIDER_MODULE = 'labs.spiders'
 
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'lab_relationship (+http://www.yourdomain.com)'
+#USER_AGENT = 'labs (+http://www.yourdomain.com)'
 
 # Configure maximum concurrent requests performed by Scrapy (default: 16)
 #CONCURRENT_REQUESTS=32
@@ -46,13 +46,13 @@ NEWSPIDER_MODULE = 'labs.spiders'
 # Enable or disable spider middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/spider-middleware.html
 #SPIDER_MIDDLEWARES = {
-#    'lab_relationship.middlewares.MyCustomSpiderMiddleware': 543,
+#    'labs.middlewares.MyCustomSpiderMiddleware': 543,
 #}
 
 # Enable or disable downloader middlewares
 # See http://scrapy.readthedocs.org/en/latest/topics/downloader-middleware.html
 #DOWNLOADER_MIDDLEWARES = {
-#    'lab_relationship.middlewares.MyCustomDownloaderMiddleware': 543,
+#    'labs.middlewares.MyCustomDownloaderMiddleware': 543,
 #}
 
 # Enable or disable extensions
@@ -64,7 +64,7 @@ NEWSPIDER_MODULE = 'labs.spiders'
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
-    'lab_relationship.pipelines.MongoDBPipeline': 300,
+    'labs.pipelines.MongoDBPipeline': 300,
 }
 
 get = lambda p, default: os.environ.get(p, default)

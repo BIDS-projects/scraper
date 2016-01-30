@@ -13,8 +13,8 @@ To run a spider, use `make crawl project=[project] spider=[spider]` where
 `project` is the directory for your project, and `spider` is the name
 of the spider.
 
-For example, to launch `lab_relationship/lab_relationship/spiders/dlab.py`, use
-`make crawl project=lab_relationship spider=dlab`.
+For example, to launch `labs/labs/spiders/dlab.py`, use
+`make crawl project=labs spider=dlab`.
 
 **Bare**
 

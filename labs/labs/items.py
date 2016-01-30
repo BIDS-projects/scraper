@@ -1,4 +1,5 @@
 from utils.items import BaseItem
+import scrapy
 
 class LinkItem(BaseItem):
     base_url = scrapy.Field()

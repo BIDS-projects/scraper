@@ -1,18 +1,17 @@
 from utils.pipelines import AbstractMongoDBPipeline, AbstractMySQLPipeline
-from .models import Domain, Link, Text
-from urllib.parse import url_parse
 
 class MySQLPipeline(AbstractMySQLPipeline):
 
     def process_item(self, item, spider):
-        if isinstance(item, LinkItem):
-            Link(
-                url=item.url,
-                
-        elif isinstance(item, TextItem):
-
-        else:
-            raise DropItem("Dropping item: {0}".format(item))
+        pass
+        # if isinstance(item, LinkItem):
+        #     Link(
+        #         url=item.url,
+        #
+        # elif isinstance(item, TextItem):
+        #
+        # else:
+        #     raise DropItem("Dropping item: {0}".format(item))
 
 
 class MongoDBPipeline(AbstractMongoDBPipeline):

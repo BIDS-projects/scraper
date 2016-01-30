@@ -17,8 +17,8 @@ class MappingItem(dict, BaseItem):
     pass
 
 
-class DLabRawSpider(scrapy.Spider):
-    name = "dlabraw"
+class WebLabsRawSpider(scrapy.Spider):
+    name = "weblabsraw"
 
     def __init__(self, *args):
         self.loader = ItemLoader(MappingItem())

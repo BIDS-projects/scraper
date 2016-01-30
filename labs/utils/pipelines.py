@@ -6,7 +6,6 @@
 # See: http://doc.scrapy.org/en/latest/topics/item-pipeline.html
 
 from scrapy.conf import settings
-from items import LinkItem, TextItem
 
 class AbstractMySQLPipeline(object):
     """Pipeline for saving to a MySQL database"""

@@ -7,7 +7,7 @@ from scrapy.http import Request
 from scrapy.item import BaseItem
 from scrapy.loader import ItemLoader
 from scrapy.exceptions import CloseSpider
-from lab_relationship.items import LinkItem, TextItem
+from labs.items import LinkItem, TextItem
 import scrapy
 import csv
 import json
@@ -22,12 +22,12 @@ import datetime
 # TODO: exit if you are on one path for too long (amplab, jenkins) OR Naive Bayes
 
 # Potential Things To Do
-# TODO: introduce depth limit 
+# TODO: introduce depth limit
 
 # Store different item into different collections in MongoDB
 # processing different item in one pipeline: https://github.com/scrapy/scrapy/issues/102
-class DlabSpider(scrapy.Spider):
-    name = "dlab"
+class WebLabsSpider(scrapy.Spider):
+    name = "weblabs"
     page_limit = 5
 
     def __init__(self):
