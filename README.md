@@ -14,15 +14,9 @@ To run a spider, use `make crawl project=[project] spider=[spider]` where
 of the spider.
 
 For example, to launch `labs/labs/spiders/dlab.py`, use
-`make crawl project=labs spider=dlab`.
+`make crawl project=labs spider=weblabs`.
 
-**Bare**
-
-
-
-**Dlab**
-
-Once the spider finishes crawling, or whenever you close the spider (ctrl + c once; twice force quits which does not activate the persisting), it will store the results under `results.json`.
+Once the spider finishes crawling, or whenever you close the spider (ctrl + c once; twice force quits which does not activate the persisting), it will store the results into the database.
 
 ## Deployment
 
