@@ -1,4 +1,5 @@
 from utils.pipelines import AbstractMongoDBPipeline, AbstractMySQLPipeline
+from labs.items import LinkItem, TextItem
 
 class MySQLPipeline(AbstractMySQLPipeline):
 

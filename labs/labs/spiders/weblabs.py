@@ -37,8 +37,7 @@ class WebLabsSpider(scrapy.Spider):
 
     def start_requests(self):
         prefix = os.path.dirname(os.path.realpath(__file__))
-        #filename = "data-science-websites.csv"
-        filename = "1debug.csv"
+        filename = "data-science-websites.csv"
         try:
             with open(os.path.join(prefix, filename), 'r') as csv_file:
                 reader = csv.reader(csv_file)
