@@ -28,16 +28,16 @@ import datetime
 # processing different item in one pipeline: https://github.com/scrapy/scrapy/issues/102
 class WebLabsSpider(scrapy.Spider):
     name = "weblabs"
-    page_limit = 5
+    page_limit = 100
 
     def __init__(self):
-
         self.filter_urls = list()
         self.requested_page_counter = dict()
 
     def start_requests(self):
         prefix = os.path.dirname(os.path.realpath(__file__))
-        filename = "data-science-websites.csv"
+        #filename = "data-science-websites.csv"
+        filename = "debug.csv"
         try:
             with open(os.path.join(prefix, filename), 'r') as csv_file:
                 reader = csv.reader(csv_file)
@@ -50,13 +50,13 @@ class WebLabsSpider(scrapy.Spider):
                     self.requested_page_counter[base_url] = 1
                     request = Request(seed_url, callback=self.parse_seed)
                     request.meta['base_url'] = base_url
-                    self.logger.info("'{}' REQUESTED".format(seed_url))
+                    #self.logger.info("'{}' REQUESTED".format(seed_url))
                     yield request
         except IOError:
             raise CloseSpider("A list of websites are needed")
 
     def parse_seed(self, response):
-        self.logger.info("PARSED LINK: {}".format(response.url))
+        #self.logger.info("PARSED LINK: {}".format(response.url))
         base_url = response.meta['base_url']
 
         # handle external redirect while still allowing internal redirect
@@ -76,9 +76,11 @@ class WebLabsSpider(scrapy.Spider):
                 link_item['timestamp'] = datetime.datetime.now()
                 yield link_item
 
+        # filter removes items with zero length
         text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
         text = ' '.join(text)
-        text = text.split()
+        # to divide up into words, not each html block
+        #text = text.split()
 
         text_item = TextItem()
         text_item['base_url'] = base_url
