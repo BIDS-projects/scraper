@@ -12,3 +12,9 @@ class TextItem(BaseItem):
     url = scrapy.Field()
     text = scrapy.Field()
     timestamp = scrapy.Field()
+
+class PaperItem(BaseItem):
+    url = scrapy.Field()
+    researcher = scrapy.Field()
+    text = scrapy.Field()
+    timestamp = scrapy.Field()

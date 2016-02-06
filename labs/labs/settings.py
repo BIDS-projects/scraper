@@ -75,6 +75,7 @@ MONGODB_PORT                = get('MONGODB_PORT', 27017)
 MONGODB_DB                  = get('MONGODB_DB', "ecosystem_mapping")
 MONGODB_LINK_COLLECTION     = get('MONGODB_LINK_COLLECTION', "link_collection")
 MONGODB_TEXT_COLLECTION     = get('MONGODB_TEXT_COLLECTION', "text_collection")
+# MONGODB_PAPER_COLLECTION    = get('MONGODB_PAPER_COLLECTION', "paper_collection")
 
 # MySQLPipeline settings
 MYSQL_USERNAME              = get('MYSQL_USERNAME', 'root')
