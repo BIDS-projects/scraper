@@ -32,6 +32,7 @@ class AbstractMongoDBPipeline(object):
         db = connection[settings['MONGODB_DB']]
         self.link_collection = db[settings['MONGODB_LINK_COLLECTION']]
         self.text_collection = db[settings['MONGODB_TEXT_COLLECTION']]
+        # self.paper_collection = db[settings['MONGODB_PAPER_COLLECTION']]
 
     def process_item(self, item, spider):
         raise NotImplementedError()

@@ -1,5 +1,5 @@
 from utils.pipelines import AbstractMongoDBPipeline, AbstractMySQLPipeline
-from labs.items import LinkItem, TextItem
+from labs.items import LinkItem, TextItem, PaperItem
 
 class MySQLPipeline(AbstractMySQLPipeline):
 
@@ -24,6 +24,10 @@ class MongoDBPipeline(AbstractMongoDBPipeline):
         elif isinstance(item, TextItem):
             self.text_collection.insert_one(dict(item))
             return item
+        elif isinstance(item, PaperItem):
+            pass
+            #self.paper_collection.insert_one(dict(item))
+            #return item
         else:
             raise DropItem("Dropping item: {0}".format(item))
 
