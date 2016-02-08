@@ -26,7 +26,7 @@ class PDFSpider(scrapy.Spider):
             index = 0
             while index < PDFSpider.page_limit:
                 url = "https://scholar.google.com/scholar?start=" + str(index) + "&q=filetype:pdf+author:" + author + "&hl=en&num=20&as_sdt=1,5&as_vis=1"
-                print url
+                self.logger.info( url )
                 request = Request(url, callback = self.parse_seed)
                 yield request
                 index += 20
@@ -48,8 +48,8 @@ class PDFSpider(scrapy.Spider):
                     paper_item['text'] = text
                     paper_item['timestamp'] = datetime.datetime.now()
                     firstLink = False
-                    print "RETRIEVED PAPER " + pdfURL
-                    print "CURRENT RESEARCHER " + self.researcher
+                    self.logger.info( "RETRIEVED PAPER " + pdfURL )
+                    self.logger.info( "CURRENT RESEARCHER " + self.researcher )
                     yield paper_item
             else:
                 firstLink = True
