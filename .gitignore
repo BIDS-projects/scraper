@@ -5,6 +5,8 @@ db*
 *.org
 *.pyc
 *.json
+*.pdf
+
 venv/
 *results.json
 
