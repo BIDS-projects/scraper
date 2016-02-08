@@ -16,13 +16,6 @@ import datetime
 
 # DYNAMIC ITEM REFERNCE: (http://stackoverflow.com/questions/5069416/scraping-data-without-having-to-explicitly-define-each-field-to-be-scraped)
 # Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
-# TODOS IN THE ORDER OF PRIORITY
-
-# TODO: fix the qb3 bug (if the seed url contains path, it fails)
-# TODO: exit if you are on one path for too long (amplab, jenkins) OR Naive Bayes
-
-# Potential Things To Do
-# TODO: introduce depth limit
 
 # Store different item into different collections in MongoDB
 # processing different item in one pipeline: https://github.com/scrapy/scrapy/issues/102
