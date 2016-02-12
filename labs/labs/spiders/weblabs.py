@@ -21,7 +21,7 @@ import datetime
 # processing different item in one pipeline: https://github.com/scrapy/scrapy/issues/102
 class WebLabsSpider(scrapy.Spider):
     name = "weblabs"
-    page_limit = 100
+    page_limit = 1000
 
     def __init__(self):
         self.filter_urls = list()
@@ -97,4 +97,8 @@ class WebLabsSpider(scrapy.Spider):
         return LinkExtractor(deny_domains=base_url).extract_links(response)
 
     def get_internal_links(self, base_url, response):
-        return LinkExtractor(allow_domains=base_url).extract_links(response)
+        return LinkExtractor(allow_domains=base_url, deny="/jenkins/").extract_links(response)
+
+    def get_jenkins(self):
+        return LinkExtractor(allow="/jenkins/").extract_links(response)
+

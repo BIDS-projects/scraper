@@ -15,7 +15,7 @@ OR
 # Data Analysis & Visualization:
 
 - For hyperlinks
-    - visualization: D3.js (**Vinitra**)
+    - visualization: D3.js 
           - each node represents a data science institution
             - color-coded to represent the type of data science institution
             - size to represent the significance of institution

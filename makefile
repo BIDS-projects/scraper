@@ -1,3 +1,7 @@
+LOGPATH = logs
+LOGFILE = $(LOGPATH)/$(spider)-$(shell date +'%Y%m%d%H%M%S').log
+
+
 check: check.sh
 	bash check.sh
 
@@ -5,11 +9,11 @@ install: install.sh
 	bash install.sh
 
 deploy: ${path}/*
-	source activate.sh && \
-		cd ${path} && \
-		shub deploy
+	cd ${path} && \
+	shub deploy
 
 crawl: ${project}/*
-	source activate.sh && \
 	cd ${project} && \
+	[[ -d ${LOGPATH} ]] || mkdir ${LOGPATH} && \
 	scrapy crawl ${spider}
+	#scrapy crawl ${spider} --logfile=${LOGFILE}

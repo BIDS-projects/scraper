@@ -1,4 +1,5 @@
 ## Introduction
+
 Crawls through websites of data science institutions and collect relevant information to aid DSI ecosystem mapping
 
 ## Installation
