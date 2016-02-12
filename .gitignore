@@ -10,6 +10,8 @@ db*
 venv/
 *results.json
 
+debug.csv
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
