@@ -1,5 +1,6 @@
 from utils.pipelines import AbstractMySQLPipeline
 from labs.items import LinkItem, TextItem, PaperItem
+from scrapy.conf import settings
 
 class MySQLPipeline(AbstractMySQLPipeline):
 
@@ -15,7 +16,7 @@ class MySQLPipeline(AbstractMySQLPipeline):
         #     raise DropItem("Dropping item: {0}".format(item))
 
 
-class MongoDBPipeline(AbstractMongoDBPipeline):
+class MongoDBPipeline(object):
     """Pipeline for saving to a MongoDB database"""
 
     def __init__(self):
