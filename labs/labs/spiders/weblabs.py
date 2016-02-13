@@ -52,6 +52,7 @@ class WebLabsSpider(scrapy.Spider):
     def parse_seed(self, response):
         #self.logger.info("PARSED LINK: {}".format(response.url))
         base_url = response.meta['base_url']
+        tier = response.meta['tier'] + 1
 
         # handle external redirect while still allowing internal redirect
         if urlparse(response.url).netloc != base_url:
@@ -62,13 +63,15 @@ class WebLabsSpider(scrapy.Spider):
 
         for external_link in external_links:
             # filter_urls filters out external links that are not on the list
+            external_link_item = ExternalLinkItem()
+            external_link_item['base_url'] = base_url
+            external_link_item['src_url'] = response.url
+            external_link_item['timestamp'] = datetime.datetime.now()
             if urlparse(external_link.url).netloc in self.filter_urls:
-                external_link_item = ExternalLinkItem()
-                external_link_item['base_url'] = base_url
-                external_link_item['url'] = response.url
                 external_link_item['dst_url'] = external_link.url
-                external_link_item['timestamp'] = datetime.datetime.now()
-                yield link_item
+            else:
+                external_link_item['non_filtered_url'] = external_link.url
+            yield external_link_item
 
         # filter removes items with zero length
         text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
@@ -78,7 +81,7 @@ class WebLabsSpider(scrapy.Spider):
 
         text_item = TextItem()
         text_item['base_url'] = base_url
-        text_item['url'] = response.url
+        text_item['src_url'] = response.url
         text_item['text'] = text
         text_item['timestamp'] = datetime.datetime.now()
         yield text_item
@@ -90,15 +93,17 @@ class WebLabsSpider(scrapy.Spider):
             request = Request(internal_link.url, callback=self.parse_seed)
             request.meta['base_url'] = base_url
             request.meta['dont_redirect'] = True
+            request.meta['tier'] = tier
+
             self.logger.info("REQUESTED LINK: {}".format(internal_link.url))
+
             internal_link_item = InternalLinkItem()
             internal_link_item['base_url'] = base_url
-            internal_link_item['url'] = response.url
+            internal_link_item['src_url'] = response.url
             internal_link_item['dst_url'] = internal_link.url
             internal_link_item['timestamp'] = datetime.datetime.now()
-            tier = response.meta['tier'] + 1
             internal_link_item['tier'] = tier
-            request.meta['tier'] = tier
+            yield internal_link_item
             yield request
 
     def get_external_links(self, base_url, response):
