@@ -18,3 +18,4 @@ class PaperItem(BaseItem):
     researcher = scrapy.Field()
     text = scrapy.Field()
     timestamp = scrapy.Field()
+    department = scrapy.Field()
