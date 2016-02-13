@@ -43,6 +43,7 @@ class WebLabsSpider(scrapy.Spider):
                     self.requested_page_counter[base_url] = 1
                     request = Request(seed_url, callback=self.parse_seed)
                     request.meta['base_url'] = base_url
+                    request.meta['tier'] = 0
                     #self.logger.info("'{}' REQUESTED".format(seed_url))
                     yield request
         except IOError:
@@ -62,11 +63,11 @@ class WebLabsSpider(scrapy.Spider):
         for external_link in external_links:
             # filter_urls filters out external links that are not on the list
             if urlparse(external_link.url).netloc in self.filter_urls:
-                link_item = LinkItem()
-                link_item['base_url'] = base_url
-                link_item['url'] = response.url
-                link_item['link'] = external_link.url
-                link_item['timestamp'] = datetime.datetime.now()
+                external_link_item = ExternalLinkItem()
+                external_link_item['base_url'] = base_url
+                external_link_item['url'] = response.url
+                external_link_item['dst_url'] = external_link.url
+                external_link_item['timestamp'] = datetime.datetime.now()
                 yield link_item
 
         # filter removes items with zero length
@@ -82,7 +83,6 @@ class WebLabsSpider(scrapy.Spider):
         text_item['timestamp'] = datetime.datetime.now()
         yield text_item
 
-
         for internal_link in self.get_internal_links(base_url, response):
             if self.requested_page_counter[base_url] >= self.page_limit:
                 break
@@ -91,6 +91,14 @@ class WebLabsSpider(scrapy.Spider):
             request.meta['base_url'] = base_url
             request.meta['dont_redirect'] = True
             self.logger.info("REQUESTED LINK: {}".format(internal_link.url))
+            internal_link_item = InternalLinkItem()
+            internal_link_item['base_url'] = base_url
+            internal_link_item['url'] = response.url
+            internal_link_item['dst_url'] = internal_link.url
+            internal_link_item['timestamp'] = datetime.datetime.now()
+            tier = response.meta['tier'] + 1
+            internal_link_item['tier'] = tier
+            request.meta['tier'] = tier
             yield request
 
     def get_external_links(self, base_url, response):
@@ -101,4 +109,3 @@ class WebLabsSpider(scrapy.Spider):
 
     def get_jenkins(self):
         return LinkExtractor(allow="/jenkins/").extract_links(response)
-
