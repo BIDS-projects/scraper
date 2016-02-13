@@ -1,5 +1,5 @@
 from utils.pipelines import AbstractMySQLPipeline
-from labs.items import LinkItem, TextItem, PaperItem
+from labs.items import *
 from scrapy.conf import settings
 
 class MySQLPipeline(AbstractMySQLPipeline):

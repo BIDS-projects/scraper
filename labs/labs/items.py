@@ -2,7 +2,7 @@ from utils.items import BaseItem
 import scrapy
 
 
-class LinkItem(BaseItem):
+class LinkItem(scrapy.Item):
     base_url = scrapy.Field()
     url = scrapy.Field()
     dst_url = scrapy.Field()
@@ -14,7 +14,7 @@ class ExternalLinkItem(LinkItem):
 class InternalLinkItem(LinkItem):
     tier = scrapy.Field()
 
-class TextItem(BaseItem):
+class TextItem(scrapy.Item):
     base_url = scrapy.Field()
     url = scrapy.Field()
     text = scrapy.Field()
@@ -26,7 +26,7 @@ class PaperItem(BaseItem):
     text = scrapy.Field()
     timestamp = scrapy.Field()
 
-class JenkinsItem(BaseItem):
+class JenkinsItem(scrapy.Item):
     base_url = scrapy.Field()
     url = scrapy.Field()
     text = scrapy.Field()

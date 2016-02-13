@@ -7,7 +7,7 @@ from scrapy.http import Request
 from scrapy.item import BaseItem
 from scrapy.loader import ItemLoader
 from scrapy.exceptions import CloseSpider
-from labs.items import LinkItem, TextItem
+from labs.items import *
 import scrapy
 import csv
 import json
