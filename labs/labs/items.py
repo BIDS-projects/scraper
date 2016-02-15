@@ -25,6 +25,7 @@ class PaperItem(BaseItem):
     researcher = scrapy.Field()
     text = scrapy.Field()
     timestamp = scrapy.Field()
+    department = scrapy.Field()
 
 class JenkinsItem(scrapy.Item):
     base_url = scrapy.Field()

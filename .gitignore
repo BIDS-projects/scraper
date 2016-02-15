@@ -1,6 +1,6 @@
 # following line might need to be removed in future
 *setup.py
-db*
+*.db*
 
 *.org
 *.pyc
