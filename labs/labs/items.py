@@ -19,6 +19,7 @@ class TextItem(scrapy.Item):
     src_url = scrapy.Field()
     text = scrapy.Field()
     timestamp = scrapy.Field()
+    tier = scrapy.Field()
 
 class PaperItem(BaseItem):
     url = scrapy.Field()

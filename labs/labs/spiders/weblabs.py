@@ -21,7 +21,7 @@ import datetime
 # processing different item in one pipeline: https://github.com/scrapy/scrapy/issues/102
 class WebLabsSpider(scrapy.Spider):
     name = "weblabs"
-    page_limit = 1000
+    page_limit = 500
 
     def __init__(self):
         self.filter_urls = list()
@@ -43,7 +43,7 @@ class WebLabsSpider(scrapy.Spider):
                     self.requested_page_counter[base_url] = 1
                     request = Request(seed_url, callback=self.parse_seed)
                     request.meta['base_url'] = base_url
-                    request.meta['tier'] = 0
+                    request.meta['tier'] = -1
                     #self.logger.info("'{}' REQUESTED".format(seed_url))
                     yield request
         except IOError:
@@ -63,6 +63,7 @@ class WebLabsSpider(scrapy.Spider):
 
         for external_link in external_links:
             # filter_urls filters out external links that are not on the list
+            """
             external_link_item = ExternalLinkItem()
             external_link_item['base_url'] = base_url
             external_link_item['src_url'] = response.url
@@ -72,6 +73,8 @@ class WebLabsSpider(scrapy.Spider):
             else:
                 external_link_item['non_filtered_url'] = external_link.url
             yield external_link_item
+            """
+            pass
 
         # filter removes items with zero length
         text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
@@ -84,6 +87,7 @@ class WebLabsSpider(scrapy.Spider):
         text_item['src_url'] = response.url
         text_item['text'] = text
         text_item['timestamp'] = datetime.datetime.now()
+        text_item['tier'] = tier
         yield text_item
 
         for internal_link in self.get_internal_links(base_url, response):
@@ -95,15 +99,17 @@ class WebLabsSpider(scrapy.Spider):
             request.meta['dont_redirect'] = True
             request.meta['tier'] = tier
 
+            """
             self.logger.info("REQUESTED LINK: {}".format(internal_link.url))
-
             internal_link_item = InternalLinkItem()
             internal_link_item['base_url'] = base_url
             internal_link_item['src_url'] = response.url
             internal_link_item['dst_url'] = internal_link.url
             internal_link_item['timestamp'] = datetime.datetime.now()
             internal_link_item['tier'] = tier
+            self.logger.debug("current url: {}; tier: {}".format(response.url, tier))
             yield internal_link_item
+            """
             yield request
 
     def get_external_links(self, base_url, response):
