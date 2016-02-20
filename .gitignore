@@ -4,7 +4,7 @@
 *setup.py
 *.db*
 
-labs/crawl
+labs/crawls
 
 
 *.org
