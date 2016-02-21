@@ -23,6 +23,7 @@ import datetime
 class WebLabsSpider(scrapy.Spider):
     name = "weblabs"
     page_limit = 500
+    tier_limit = 1
 
     def __init__(self):
         self.filter_urls = list()
@@ -44,17 +45,14 @@ class WebLabsSpider(scrapy.Spider):
                     self.requested_page_counter[base_url] = 1
                     request = Request(seed_url, callback=self.parse_seed)
                     request.meta['base_url'] = base_url
-                    request.meta['tier'] = -1
-                    #self.logger.info("'{}' REQUESTED".format(seed_url))
                     yield request
         except IOError:
             raise CloseSpider("A list of websites are needed")
 
     def parse_seed(self, response):
-        #self.logger.info("PARSED LINK: {}".format(response.url))
         base_url = response.meta['base_url']
-        tier = response.meta['tier'] + 1
-
+        tier = response.meta['depth']
+        #self.logger.info("URL: {} ; TIER: {}".format(response.url, tier))
         # handle external redirect while still allowing internal redirect
         if urlparse(response.url).netloc != base_url:
             return
@@ -77,27 +75,21 @@ class WebLabsSpider(scrapy.Spider):
             """
             pass
 
-        # filter removes items with zero length
-        text = get_text(response)
-        # to divide up into words, not each html block
-        #text = text.split()
-
         text_item = TextItem()
         text_item['base_url'] = base_url
         text_item['src_url'] = response.url
-        text_item['text'] = text
+        text_item['text'] = self.get_text(response)
         text_item['timestamp'] = datetime.datetime.now()
         text_item['tier'] = tier
         yield text_item
 
         for internal_link in self.get_internal_links(base_url, response):
-            if self.requested_page_counter[base_url] >= self.page_limit:
+            if (tier >= self.tier_limit) or (self.requested_page_counter[base_url] >= self.page_limit:):
                 break
             self.requested_page_counter[base_url] += 1
             request = Request(internal_link.url, callback=self.parse_seed)
             request.meta['base_url'] = base_url
             request.meta['dont_redirect'] = True
-            request.meta['tier'] = tier
 
             """
             self.logger.info("REQUESTED LINK: {}".format(internal_link.url))
@@ -106,8 +98,7 @@ class WebLabsSpider(scrapy.Spider):
             internal_link_item['src_url'] = response.url
             internal_link_item['dst_url'] = internal_link.url
             internal_link_item['timestamp'] = datetime.datetime.now()
-            internal_link_item['tier'] = tier
-            self.logger.debug("current url: {}; tier: {}".format(response.url, tier))
+            internal_link_item['tier'] = response.meta['depth']
             yield internal_link_item
             """
             yield request
