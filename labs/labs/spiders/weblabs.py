@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # PIPELINE: get a list of data science institutions and their websites -> crawl through each of the listed organization's internal links and aggregate external links -> perform analysis
 from urlparse import urlparse
+from bs4 import BeautifulSoup
 from scrapy.spiders import CrawlSpider, Rule
 from scrapy.linkextractors import LinkExtractor
 from scrapy.http import Request
@@ -77,8 +78,7 @@ class WebLabsSpider(scrapy.Spider):
             pass
 
         # filter removes items with zero length
-        text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
-        text = ' '.join(text)
+        text = get_text(response)
         # to divide up into words, not each html block
         #text = text.split()
 
@@ -111,6 +111,25 @@ class WebLabsSpider(scrapy.Spider):
             yield internal_link_item
             """
             yield request
+
+    def get_text(self, response):
+        text =  filter(None, [st.strip() for st in response.xpath("//*[not(self::script or self::style)]/text()[normalize-space()]").extract()])
+
+        """
+        soup = BeautifulSoup(response.body_as_unicode())
+        # remove script (js) and style (css)
+        for script in soup(["script", "style"]):
+            script.extract()
+        text = soup.get_text()
+        ## break into lines and remove leading and trailing space on each
+        lines = (line.strip() for line in text.splitlines())
+        ## break multi-headlines into a line each
+        chunks = (phrase.strip() for line in lines for phrase in line.split("  "))
+        ## drop blank lines
+        text = ' '.join(chunk for chunk in chunks if chunk)
+        """
+        text = ' '.join(text)
+        return text
 
     def get_external_links(self, base_url, response):
         return LinkExtractor(deny_domains=base_url).extract_links(response)
