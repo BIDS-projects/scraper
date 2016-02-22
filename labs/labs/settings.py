@@ -16,8 +16,15 @@ BOT_NAME = 'labs'
 SPIDER_MODULES = ['labs.spiders']
 NEWSPIDER_MODULE = 'labs.spiders'
 
-########## Custom Setting #############
-#######################################
+###################
+# CUSTOM SETTINGS #
+###################
+
+WEBSITE_PAGES_LIMIT = 500
+
+###################
+# SCRAPY SETTINGS #
+###################
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
 #USER_AGENT = 'labs (+http://www.yourdomain.com)'

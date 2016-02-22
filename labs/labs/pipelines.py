@@ -6,8 +6,8 @@ class MySQLPipeline(AbstractMySQLPipeline):
 
     def process_item(self, item, spider):
         """Save data to database"""
-        raise UserWarning(item)
-        pass
+        if isinstance(item, HTMLItem):
+            pass
 
 
 class MongoDBPipeline(object):
