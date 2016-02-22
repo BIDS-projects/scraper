@@ -1,14 +1,25 @@
 from utils.pipelines import AbstractMySQLPipeline
 from labs.items import *
 from scrapy.conf import settings
+from scrapy.exceptions import DropItem
+from db.models_mysql import HTML, Link
 
 class MySQLPipeline(AbstractMySQLPipeline):
 
     def process_item(self, item, spider):
         """Save data to database"""
+        raise UserWarning('='*100, item.__class__.__name__)
         if isinstance(item, HTMLItem):
-            pass
-
+            HTML(domain=item['domain'],
+                url=item['url'],
+                body=item['body'],
+                request=item['request']).save()
+            for link in item['links']:
+                Link(source_url=item['url'],
+                    destination_url=link.url).save()
+            return item
+        else:
+            raise DropItem("Dropping item: {0}".format(item))
 
 class MongoDBPipeline(object):
     """Pipeline for saving to a MongoDB database, with given models"""
