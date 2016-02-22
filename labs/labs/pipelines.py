@@ -5,11 +5,21 @@ from scrapy.conf import settings
 class MySQLPipeline(AbstractMySQLPipeline):
 
     def process_item(self, item, spider):
+        """Save data to database"""
+        raise UserWarning(item)
         pass
 
 
 class MongoDBPipeline(object):
-    """Pipeline for saving to a MongoDB database"""
+    """Pipeline for saving to a MongoDB database, with given models"""
+
+    def process_item(self, item, spider):
+        """Save data to database"""
+        pass
+
+
+class MongoDBPipelineFlexible(object):
+    """Pipeline for saving to a MongoDB database, with flexible format"""
 
     def __init__(self):
         from pymongo import MongoClient

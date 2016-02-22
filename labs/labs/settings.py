@@ -70,6 +70,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'labs.pipelines.MongoDBPipeline': 300,
+    'labs.pipelines.MySQLPipeline': 300
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)

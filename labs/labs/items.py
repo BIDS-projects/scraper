@@ -1,8 +1,15 @@
 from utils.items import BaseItem
 import scrapy
 
+class HTMLItem(scrapy.Item):
+    """Raw HTML item"""
+    url = scrapy.Field()
+    body = scrapy.Field()
+    request = scrapy.Field()
+    links = scrapy.Field()
 
 class LinkItem(scrapy.Item):
+    """Many to Many item for linking"""
     base_url = scrapy.Field()
     src_url = scrapy.Field()
     dst_url = scrapy.Field()
