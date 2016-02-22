@@ -1,5 +1,8 @@
 scrapy==1.0.3
 shub==1.5.0
+pymongo
+beautifulsoup4
 sqlalchemy
 sqlalchemy-utils
-pymongo
+pymysql
+mongoengine

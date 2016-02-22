@@ -6,14 +6,6 @@ class MySQLPipeline(AbstractMySQLPipeline):
 
     def process_item(self, item, spider):
         pass
-        # if isinstance(item, LinkItem):
-        #     Link(
-        #         url=item.url,
-        #
-        # elif isinstance(item, TextItem):
-        #
-        # else:
-        #     raise DropItem("Dropping item: {0}".format(item))
 
 
 class MongoDBPipeline(object):

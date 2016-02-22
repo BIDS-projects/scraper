@@ -72,23 +72,6 @@ ITEM_PIPELINES = {
     'labs.pipelines.MongoDBPipeline': 300,
 }
 
-get = lambda p, default: os.environ.get(p, default)
-
-# MongoDBPipeline setting
-MONGODB_SERVER              = get('MONGODB_SERVER', "localhost")
-MONGODB_PORT                = get('MONGODB_PORT', 27017)
-MONGODB_DB                  = get('MONGODB_DB', "ecosystem_mapping")
-MONGODB_EXTERNAL_LINK_COLLECTION     = get('MONGODB_EXTERNAL_LINK_COLLECTION', "external_link_collection")
-MONGODB_INTERNAL_LINK_COLLECTION     = get('MONGODB_INTERNAL_LINK_COLLECTION', "internal_link_collection")
-MONGODB_TEXT_COLLECTION     = get('MONGODB_TEXT_COLLECTION', "text_collection")
-# MONGODB_PAPER_COLLECTION    = get('MONGODB_PAPER_COLLECTION', "paper_collection")
-
-# MySQLPipeline settings
-MYSQL_USERNAME              = get('MYSQL_USERNAME', 'root')
-MYSQL_PASSWORD              = get('MYSQL_PASSWORD', 'root')
-MYSQL_HOST                  = get('MYSQL_HOST', 'localhost')
-MYSQL_DATABASE              = get('MYSQL_DATABASE', 'ecosystem_mapping')
-
 # Enable and configure the AutoThrottle extension (disabled by default)
 # See http://doc.scrapy.org/en/latest/topics/autothrottle.html
 # NOTE: AutoThrottle will honour the standard settings for concurrency and delay
