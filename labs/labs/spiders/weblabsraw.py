@@ -29,7 +29,7 @@ class WebLabsRawSpider(scrapy.Spider):
 
     def request(self, url, **meta):
         """create request object"""
-        return Request(url, callback=self.parse_response, meta=meta)
+        return Request(url, callback=self.parse, meta=meta)
 
     @staticmethod
     def domain(url):
@@ -49,7 +49,7 @@ class WebLabsRawSpider(scrapy.Spider):
                 self.counts[domain] += 1
                 yield self.request(url)
 
-    def parse_response(self, response):
+    def parse(self, response):
         """Parse response and yield new requests"""
         domain = self.domain(response.url)
         self.counts[domain] += 1
@@ -59,6 +59,7 @@ class WebLabsRawSpider(scrapy.Spider):
 
             html, links = self.extract_data(response)
 
+            self.html = html # hack
             yield html
             for link in links:
                 yield self.request(link.url)

@@ -8,11 +8,11 @@ class MySQLPipeline(AbstractMySQLPipeline):
 
     def process_item(self, item, spider):
         """Save data to database"""
-        raise UserWarning('='*100, item.__class__.__name__)
+        item = spider.html # hack
         if isinstance(item, HTMLItem):
-            HTML(domain=item['domain'],
+            HTML(domain=spider.domain(item['url']),
                 url=item['url'],
-                body=item['body'],
+                # body=item['body'],
                 request=item['request']).save()
             for link in item['links']:
                 Link(source_url=item['url'],
