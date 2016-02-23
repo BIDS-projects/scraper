@@ -1,23 +1,36 @@
 from utils.pipelines import AbstractMySQLPipeline
 from labs.items import *
 from scrapy.conf import settings
+from scrapy.exceptions import DropItem
+from db.models_mysql import HTML, Link
 
 class MySQLPipeline(AbstractMySQLPipeline):
 
     def process_item(self, item, spider):
-        pass
-        # if isinstance(item, LinkItem):
-        #     Link(
-        #         url=item.url,
-        #
-        # elif isinstance(item, TextItem):
-        #
-        # else:
-        #     raise DropItem("Dropping item: {0}".format(item))
-
+        """Save data to database"""
+        item = spider.html # hack
+        if isinstance(item, HTMLItem):
+            HTML(domain=spider.domain(item['url']),
+                url=item['url'],
+                # body=item['body'],
+                request=item['request']).save()
+            for link in item['links']:
+                Link(source_url=item['url'],
+                    destination_url=link.url).save()
+            return item
+        else:
+            raise DropItem("Dropping item: {0}".format(item))
 
 class MongoDBPipeline(object):
-    """Pipeline for saving to a MongoDB database"""
+    """Pipeline for saving to a MongoDB database, with given models"""
+
+    def process_item(self, item, spider):
+        """Save data to database"""
+        pass
+
+
+class MongoDBPipelineFlexible(object):
+    """Pipeline for saving to a MongoDB database, with flexible format"""
 
     def __init__(self):
         from pymongo import MongoClient
