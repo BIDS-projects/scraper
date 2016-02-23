@@ -76,6 +76,7 @@ DOWNLOADER_MIDDLEWARES = {
 # Configure item pipelines
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
+    # 'labs.pipelines.MongoDBPipelineFlexible': 300,
     'labs.pipelines.MongoDBPipeline': 300,
     'labs.pipelines.MySQLPipeline': 300
 }
