@@ -10,13 +10,15 @@ class MySQLPipeline(AbstractMySQLPipeline):
         """Save data to database"""
         item = spider.html # hack
         if isinstance(item, HTMLItem):
-            HTML(domain=spider.domain(item['url']),
+            source = HTML.get_or_create(url=item['url']).update(
+                domain=spider.domain(item['url']),
                 url=item['url'],
                 # body=item['body'],
                 request=item['request']).save()
             for link in item['links']:
-                Link(source_url=item['url'],
-                    destination_url=link.url).save()
+                target = HTML.get_or_create(url=link.url).save()
+                Link(from_html=source.id,
+                    to_html=target.id).save()
             return item
         else:
             raise DropItem("Dropping item: {0}".format(item))

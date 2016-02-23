@@ -4,7 +4,7 @@ Database Models
 BIDS Institutional Ecosystem Mapping
 """
 
-from .models import MySQLBase as Base
+from .models import MySQLBase as Base, ForeignColumn
 import sqlalchemy as sa
 
 
@@ -24,5 +24,5 @@ class Link(Base):
 
     __tablename__ = 'link'
 
-    source_url = sa.Column(sa.Text)
-    destination_url = sa.Column(sa.Text)
+    from_html = ForeignColumn(sa.Integer, sa.ForeignKey('html.id'))
+    to_html = ForeignColumn(sa.Integer, sa.ForeignKey('html.id'))
