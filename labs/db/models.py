@@ -1,6 +1,7 @@
 import sqlalchemy.ext.declarative as sad
 import sqlalchemy as sa
 import mongoengine as me
+import arrow
 
 
 class Base(object):
@@ -24,6 +25,11 @@ class MySQLBase(sad.declarative_base(), object):
     db = None
 
     id = sa.Column(sa.Integer, primary_key=True)
+    updated_at = Column(ArrowType)
+    updated_by = Column(Integer)
+    created_at = Column(ArrowType, default=arrow.now('US/Pacific'))
+    created_by = Column(Integer)
+    is_active = Column(Boolean, default=True)
 
     @classmethod
     def get_or_create(cls, **data):
@@ -35,7 +41,7 @@ class MySQLBase(sad.declarative_base(), object):
         for k, v in kwargs.items():
             setattr(self, k, v)
         return self
-        
+
     @classmethod
     def objects(cls, give_query=False, **data):
         query = cls.query().filter_by(**data)
