@@ -84,7 +84,7 @@ class WebLabsSpider(scrapy.Spider):
         yield text_item
 
         for internal_link in self.get_internal_links(base_url, response):
-            if (tier >= self.tier_limit) or (self.requested_page_counter[base_url] >= self.page_limit:):
+            if (tier >= self.tier_limit) or (self.requested_page_counter[base_url] >= self.page_limit):
                 break
             self.requested_page_counter[base_url] += 1
             request = Request(internal_link.url, callback=self.parse_seed)
