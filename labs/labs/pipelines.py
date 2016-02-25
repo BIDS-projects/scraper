@@ -29,6 +29,7 @@ class MongoDBPipeline(object):
         self.external_link_collection = db[settings['MONGODB_EXTERNAL_LINK_COLLECTION']]
         self.internal_link_collection = db[settings['MONGODB_INTERNAL_LINK_COLLECTION']]
         self.text_collection = db[settings['MONGODB_TEXT_COLLECTION']]
+        self.html_collection = db[settings['MONGODB_HTML_COLLECTION']]
         # self.paper_collection = db[settings['MONGODB_PAPER_COLLECTION']]
 
     def process_item(self, item, spider):
@@ -40,6 +41,9 @@ class MongoDBPipeline(object):
             return item
         elif isinstance(item, TextItem):
             self.text_collection.insert_one(dict(item))
+            return item
+        elif isinstance(item, HTMLItem):
+            self.html_collection.insert_one(dict(item))
             return item
         elif isinstance(item, PaperItem):
             pass

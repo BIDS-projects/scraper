@@ -1,6 +1,17 @@
 from utils.items import BaseItem
 import scrapy
 
+class HTMLItem(scrapy.Item):
+    # For weblabs
+    url = scrapy.Field()
+    base_url = scrapy.Field()
+    status = scrapy.Field()
+    headers = scrapy.Field()
+    body = scrapy.Field()
+    unicode_body = scrapy.Field()
+    request = scrapy.Field()
+    tier = scrapy.Field()
+    timestamp = scrapy.Field()
 
 class LinkItem(scrapy.Item):
     base_url = scrapy.Field()

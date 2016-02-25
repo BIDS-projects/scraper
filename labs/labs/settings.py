@@ -81,6 +81,7 @@ MONGODB_DB                  = get('MONGODB_DB', "ecosystem_mapping")
 MONGODB_EXTERNAL_LINK_COLLECTION     = get('MONGODB_EXTERNAL_LINK_COLLECTION', "external_link_collection")
 MONGODB_INTERNAL_LINK_COLLECTION     = get('MONGODB_INTERNAL_LINK_COLLECTION', "internal_link_collection")
 MONGODB_TEXT_COLLECTION     = get('MONGODB_TEXT_COLLECTION', "text_collection")
+MONGODB_HTML_COLLECTION     = get('MONGODB_HTML_COLLECTION', "html_collection")
 # MONGODB_PAPER_COLLECTION    = get('MONGODB_PAPER_COLLECTION', "paper_collection")
 
 # MySQLPipeline settings

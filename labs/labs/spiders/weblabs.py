@@ -75,6 +75,19 @@ class WebLabsSpider(scrapy.Spider):
             """
             pass
 
+        html_item = HTMLItem()
+        html_item['url'] = response.url
+        html_item['base_url'] = base_url
+        html_item['status'] = response.status
+        html_item['headers'] = str(response.headers)
+        html_item['body'] = response.body
+        html_item['unicode_body'] = response.body_as_unicode()
+        html_item['request'] = str(response.request)
+        html_item['timestamp'] = str(datetime.datetime.now())
+        html_item['tier'] = tier
+        yield html_item
+
+        """
         text_item = TextItem()
         text_item['base_url'] = base_url
         text_item['src_url'] = response.url
@@ -82,6 +95,7 @@ class WebLabsSpider(scrapy.Spider):
         text_item['timestamp'] = datetime.datetime.now()
         text_item['tier'] = tier
         yield text_item
+        """
 
         for internal_link in self.get_internal_links(base_url, response):
             if (tier >= self.tier_limit) or (self.requested_page_counter[base_url] >= self.page_limit):
