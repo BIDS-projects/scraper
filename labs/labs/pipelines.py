@@ -33,18 +33,18 @@ class MongoDBPipeline(object):
         # self.paper_collection = db[settings['MONGODB_PAPER_COLLECTION']]
 
     def process_item(self, item, spider):
-        if isinstance(item, ExternalLinkItem):
-            self.external_link_collection.replace_one(dict(item), upsert=True)
-            return item
-        # elif isinstance(item, InternalLinkItem):
+        # if isinstance(item, ExternalLinkItem):
+        #     self.external_link_collection.replace_one(dict(item), upsert=True)
+        #     return item
+        # # elif isinstance(item, InternalLinkItem):
         #     self.internal_link_collection.replace_one(dict(item), upsert=True)
         #     return item
         # elif isinstance(item, TextItem):
         #     self.text_collection.replace_one(dict(item), upsert=True)
         #     return item
-        elif isinstance(item, HTMLItem):
+        if isinstance(item, HTMLItem):
             self.html_collection.replace_one({"url": item['url']},dict(item), upsert=True)
-            return item
+        #    return item
         # elif isinstance(item, PaperItem):
         #     pass
             #self.paper_collection.replace_one(dict(item), upsert=True)
