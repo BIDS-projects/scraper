@@ -34,20 +34,20 @@ class MongoDBPipeline(object):
 
     def process_item(self, item, spider):
         if isinstance(item, ExternalLinkItem):
-            self.external_link_collection.insert_one(dict(item))
+            self.external_link_collection.replace_one(dict(item), upsert=True)
             return item
-        elif isinstance(item, InternalLinkItem):
-            self.internal_link_collection.insert_one(dict(item))
-            return item
-        elif isinstance(item, TextItem):
-            self.text_collection.insert_one(dict(item))
-            return item
+        # elif isinstance(item, InternalLinkItem):
+        #     self.internal_link_collection.replace_one(dict(item), upsert=True)
+        #     return item
+        # elif isinstance(item, TextItem):
+        #     self.text_collection.replace_one(dict(item), upsert=True)
+        #     return item
         elif isinstance(item, HTMLItem):
-            self.html_collection.insert_one(dict(item))
+            self.html_collection.replace_one({"url": item['url']},dict(item), upsert=True)
             return item
-        elif isinstance(item, PaperItem):
-            pass
-            #self.paper_collection.insert_one(dict(item))
+        # elif isinstance(item, PaperItem):
+        #     pass
+            #self.paper_collection.replace_one(dict(item), upsert=True)
             #return item
         else:
             raise DropItem("Dropping item: {0}".format(item))
