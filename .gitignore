@@ -4,7 +4,7 @@
 *setup.py
 *.db*
 
-labs/crawls
+crawls/
 
 
 *.org
@@ -16,6 +16,7 @@ venv/
 *results.json
 
 debug.csv
+temp.csv
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
