@@ -38,18 +38,21 @@ class WebLabsSpider(scrapy.Spider):
                 reader = csv.reader(csv_file)
                 header = next(reader)
                 for row in reader:
+                    inst_name = row[0]
                     seed_url = row[1].strip()
                     base_url = urlparse(seed_url).netloc
                     self.filter_urls.append(base_url)
                     # Starts from 1 since the seed page will be always crawled
                     self.requested_page_counter[base_url] = 1
                     request = Request(seed_url, callback=self.parse_seed)
+                    request.meta['inst_name'] = inst_name
                     request.meta['base_url'] = base_url
                     yield request
         except IOError:
             raise CloseSpider("A list of websites are needed")
 
     def parse_seed(self, response):
+        inst_name = response.meta['inst_name']
         base_url = response.meta['base_url']
         tier = response.meta['depth']
         #self.logger.info("URL: {} ; TIER: {}".format(response.url, tier))
@@ -76,6 +79,7 @@ class WebLabsSpider(scrapy.Spider):
             pass
 
         html_item = HTMLItem()
+        html_item['inst_name'] = inst_name
         html_item['url'] = response.url
         html_item['base_url'] = base_url
         html_item['status'] = response.status
@@ -102,6 +106,7 @@ class WebLabsSpider(scrapy.Spider):
                 break
             self.requested_page_counter[base_url] += 1
             request = Request(internal_link.url, callback=self.parse_seed)
+            request.meta['inst_name'] = inst_name
             request.meta['base_url'] = base_url
             request.meta['dont_redirect'] = True
 

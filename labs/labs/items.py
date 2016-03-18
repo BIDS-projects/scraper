@@ -3,6 +3,7 @@ import scrapy
 
 class HTMLItem(scrapy.Item):
     # For weblabs
+    inst_name = scrapy.Field()
     url = scrapy.Field()
     base_url = scrapy.Field()
     status = scrapy.Field()
