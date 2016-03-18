@@ -17,6 +17,7 @@ SPIDER_MODULES = ['labs.spiders']
 NEWSPIDER_MODULE = 'labs.spiders'
 
 ########## Custom Setting #############
+LOG_LEVEL = 'INFO'
 #######################################
 
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
@@ -97,7 +98,7 @@ AUTOTHROTTLE_ENABLED=True
 # The initial download delay
 AUTOTHROTTLE_START_DELAY=5
 # The maximum download delay to be set in case of high latencies
-AUTOTHROTTLE_MAX_DELAY=60
+AUTOTHROTTLE_MAX_DELAY=30
 # Enable showing throttling stats for every response received:
 #AUTOTHROTTLE_DEBUG=False
 

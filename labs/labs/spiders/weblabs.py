@@ -22,9 +22,8 @@ import datetime
 # processing different item in one pipeline: https://github.com/scrapy/scrapy/issues/102
 class WebLabsSpider(scrapy.Spider):
     name = "weblabs"
-    page_limit = 500
-    tier_limit = 1
-
+    page_limit = 10000
+    tier_limit = 5
     def __init__(self):
         self.filter_urls = list()
         self.requested_page_counter = dict()
