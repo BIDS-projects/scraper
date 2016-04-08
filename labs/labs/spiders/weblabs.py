@@ -68,7 +68,10 @@ class WebLabsSpider(scrapy.Spider):
         html_item['status'] = response.status
         html_item['headers'] = str(response.headers)
         html_item['body'] = response.body
-        html_item['unicode_body'] = response.body_as_unicode()
+        try:
+            html_item['unicode_body'] = response.body_as_unicode()
+        except AttributeError:
+            pass
         html_item['request'] = str(response.request)
         html_item['timestamp'] = str(datetime.datetime.now())
         html_item['tier'] = tier
@@ -78,7 +81,7 @@ class WebLabsSpider(scrapy.Spider):
             if (tier >= self.tier_limit) or (self.requested_page_counter[base_url] >= self.page_limit):
                 break
             self.requested_page_counter[base_url] += 1
-            
+
             request = Request(internal_link.url, callback=self.parse_seed, priority=priority)
 
             request.meta['inst_name'] = inst_name
