@@ -1,55 +1,56 @@
-"""Aerospace Computational Design Lab (ACDL)""",http://raphael.mit.edu/
-"""Agent-Based Intelligent Reactive Environments""",http://aire.csail.mit.edu/
-"""Alewife Project""",http://www.cag.lcs.mit.edu/alewife/
-"""Auto-ID Center""",http://autoidlabs.mit.edu/
-"""Brain and Cognitive Sciences""",http://web.mit.edu/bcs/
-"""Broad Institute""",http://www.broad.mit.edu/
-"""Cadlab""",http://cadlab.mit.edu/
-"""Center for Biological and Computational Learning""",http://cbcl.mit.edu/
-"""Center for Bits and Atoms""",http://cba.mit.edu/
-"""Center for Brains, Minds and Machines (CBMM)""",http://cbmm.mit.edu/
-"""Center for Educational Computing Initiatives (CECI)""",http://ceci.mit.edu/
-"""Center for Future Civic Media""",http://civic.mit.edu/
-"""Classroom Learning Partner""",http://projects.csail.mit.edu/clp/about/
-"""Clinical Decision-Making Group (MEDG)""",http://groups.csail.mit.edu/medg/
-"""Communications and Networking Research Group""",http://web.mit.edu/aeroastro/labs/cnrg/
-"""Computation for Design and Optimization""",http://computationalengineering.mit.edu/education/
-"""Computation Structures Group""",http://www.csg.lcs.mit.edu/
-"""Computational Biology""",http://compbio.mit.edu/
-"""Computational Cognitive Science Group""",http://web.mit.edu/cocosci/
-"""Computational Genomics""",http://www.psrg.csail.mit.edu/
-"""Computer Architecture Group""",http://www.cag.lcs.mit.edu/
-"""Computer Science and Artificial Intelligence Laboratory (CSAIL)""",http://www.csail.mit.edu/
-"""d'Arbeloff Laboratory for Information Systems and Technology""",http://darbelofflab.mit.edu/
-"""Data Center""",http://datacenter.mit.edu/
-"""Decentralized Information Group""",http://groups.csail.mit.edu/dig/
-"""Design Rationale""",http://rationale.csail.mit.edu/
-"""Digital Design and Fabrication Group""",http://web.mit.edu/ddfg/
-"""Dynamic Languages Group""",http://www.ai.mit.edu/projects/dynlangs/
-"""Edgerton Center""",http://web.mit.edu/edgerton/
-"""Electrical Engineering and Computer Science""",http://www.eecs.mit.edu/
-"""Evolutionary Design and Optimization""",http://groups.csail.mit.edu/EVO-DesignOpt/groupWebSite/
-"""Haystack""",http://haystack.csail.mit.edu/index.html
-"""Larch""",http://www.sds.lcs.mit.edu/spd/larch/
-"""Learning and Intelligent Systems""",http://lis.csail.mit.edu/
-"""Lincoln Laboratory""",http://www.ll.mit.edu/
-"""Media Arts and Sciences""",http://www.media.mit.edu/mas/
-"""Media Lab""",http://media.mit.edu/
-"""Medical Vision Group""",http://groups.csail.mit.edu/vision/medical-vision/
-"""Multiscale Computing Project""",http://www.cag.lcs.mit.edu/multiscale/
-"""Networks and Mobile Systems""",http://nms.csail.mit.edu/
-"""NuMesh Group""",http://www.cag.lcs.mit.edu/numesh/
-"""Operations Research Center""",http://web.mit.edu/orc/www/
-"""Parallel and Distributed Operating Systems Group""",http://www.pdos.lcs.mit.edu/
-"""Programming Methodology Group (PMG)""",http://www.pmg.lcs.mit.edu/
-"""Programming Systems Research Group""",http://www.psrg.lcs.mit.edu/
-"""Project Aries""",http://www.ai.mit.edu/projects/aries/
-"""Project Oxygen""",http://oxygen.lcs.mit.edu/
-"""Spoken Language Systems Group""",http://www.sls.csail.mit.edu/sls/
-"""RALA: Reconfigurable Asynchronous Logic Automata""",http://rala.cba.mit.edu/
-"""Stochastic Systems Group""",http://ssg.mit.edu/
-"""Switzerland (Project MAC)""",http://www.swiss.csail.mit.edu/projects/mac/
-"""Theory of Computation Group""",http://theory.lcs.mit.edu/
-"""Vision""",http://www.ai.mit.edu/projects/vision/welcome/
-"""Vision Interface Project""",http://www.ai.mit.edu/projects/vip/
-"""World Wide Web Consortium (W3C)""",http://www.w3.org/
+Name,Website
+"Aerospace Computational Design Lab (ACDL)",http://raphael.mit.edu/
+"Agent-Based Intelligent Reactive Environments",http://aire.csail.mit.edu/
+"Alewife Project",http://www.cag.lcs.mit.edu/alewife/
+"Auto-ID Center",http://autoidlabs.mit.edu/
+"Brain and Cognitive Sciences",http://web.mit.edu/bcs/
+"Broad Institute",http://www.broad.mit.edu/
+"Cadlab",http://cadlab.mit.edu/
+"Center for Biological and Computational Learning",http://cbcl.mit.edu/
+"Center for Bits and Atoms",http://cba.mit.edu/
+"Center for Brains, Minds and Machines (CBMM)",http://cbmm.mit.edu/
+"Center for Educational Computing Initiatives (CECI)",http://ceci.mit.edu/
+"Center for Future Civic Media",http://civic.mit.edu/
+"Classroom Learning Partner",http://projects.csail.mit.edu/clp/about/
+"Clinical Decision-Making Group (MEDG)",http://groups.csail.mit.edu/medg/
+"Communications and Networking Research Group",http://web.mit.edu/aeroastro/labs/cnrg/
+"Computation for Design and Optimization",http://computationalengineering.mit.edu/education/
+"Computation Structures Group",http://www.csg.lcs.mit.edu/
+"Computational Biology",http://compbio.mit.edu/
+"Computational Cognitive Science Group",http://web.mit.edu/cocosci/
+"Computational Genomics",http://www.psrg.csail.mit.edu/
+"Computer Architecture Group",http://www.cag.lcs.mit.edu/
+"Computer Science and Artificial Intelligence Laboratory (CSAIL)",http://www.csail.mit.edu/
+"d'Arbeloff Laboratory for Information Systems and Technology",http://darbelofflab.mit.edu/
+"Data Center",http://datacenter.mit.edu/
+"Decentralized Information Group",http://groups.csail.mit.edu/dig/
+"Design Rationale",http://rationale.csail.mit.edu/
+"Digital Design and Fabrication Group",http://web.mit.edu/ddfg/
+"Dynamic Languages Group",http://www.ai.mit.edu/projects/dynlangs/
+"Edgerton Center",http://web.mit.edu/edgerton/
+"Electrical Engineering and Computer Science",http://www.eecs.mit.edu/
+"Evolutionary Design and Optimization",http://groups.csail.mit.edu/EVO-DesignOpt/groupWebSite/
+"Haystack",http://haystack.csail.mit.edu/index.html
+"Larch",http://www.sds.lcs.mit.edu/spd/larch/
+"Learning and Intelligent Systems",http://lis.csail.mit.edu/
+"Lincoln Laboratory",http://www.ll.mit.edu/
+"Media Arts and Sciences",http://www.media.mit.edu/mas/
+"Media Lab",http://media.mit.edu/
+"Medical Vision Group",http://groups.csail.mit.edu/vision/medical-vision/
+"Multiscale Computing Project",http://www.cag.lcs.mit.edu/multiscale/
+"Networks and Mobile Systems",http://nms.csail.mit.edu/
+"NuMesh Group",http://www.cag.lcs.mit.edu/numesh/
+"Operations Research Center",http://web.mit.edu/orc/www/
+"Parallel and Distributed Operating Systems Group",http://www.pdos.lcs.mit.edu/
+"Programming Methodology Group (PMG)",http://www.pmg.lcs.mit.edu/
+"Programming Systems Research Group",http://www.psrg.lcs.mit.edu/
+"Project Aries",http://www.ai.mit.edu/projects/aries/
+"Project Oxygen",http://oxygen.lcs.mit.edu/
+"Spoken Language Systems Group",http://www.sls.csail.mit.edu/sls/
+"RALA: Reconfigurable Asynchronous Logic Automata",http://rala.cba.mit.edu/
+"Stochastic Systems Group",http://ssg.mit.edu/
+"Switzerland (Project MAC)",http://www.swiss.csail.mit.edu/projects/mac/
+"Theory of Computation Group",http://theory.lcs.mit.edu/
+"Vision",http://www.ai.mit.edu/projects/vision/welcome/
+"Vision Interface Project",http://www.ai.mit.edu/projects/vip/
+"World Wide Web Consortium (W3C)",http://www.w3.org/
