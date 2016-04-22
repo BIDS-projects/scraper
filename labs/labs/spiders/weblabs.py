@@ -14,6 +14,7 @@ import csv
 import json
 import os
 import datetime
+import random
 
 # DYNAMIC ITEM REFERNCE: (http://stackoverflow.com/questions/5069416/scraping-data-without-having-to-explicitly-define-each-field-to-be-scraped)
 # Network Analysis Algorithms: https://networkx.github.io/documentation/latest/reference/algorithms.html
@@ -31,6 +32,7 @@ class WebLabsSpider(scrapy.Spider):
     def start_requests(self):
         prefix = os.path.dirname(os.path.realpath(__file__))
         filename = "data-science-websites.csv"
+        request_list = list()
         try:
             with open(os.path.join(prefix, filename), 'r') as csv_file:
                 reader = csv.reader(csv_file)
@@ -45,7 +47,9 @@ class WebLabsSpider(scrapy.Spider):
                     request = Request(seed_url, callback=self.parse_seed)
                     request.meta['inst_name'] = inst_name
                     request.meta['base_url'] = base_url
-                    yield request
+                    request_list.append(request)
+                random.shuffle(request_list)
+                return request_list
         except IOError:
             raise CloseSpider("A list of websites are needed")
 
