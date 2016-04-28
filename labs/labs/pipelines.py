@@ -16,6 +16,14 @@ class MySQLPipeline(AbstractMySQLPipeline):
         #     raise DropItem("Dropping item: {0}".format(item))
 
 
+class PreprocessPipeline(object):
+    """Pipeline that purifies raw data and saves to the database"""
+
+    def process_item(self, item, spider):
+        if isinstance(item, HTMLItem):
+            self.html_collection.replace_one({"url": item['url']},dict(item), upsert=True)
+
+    
 class MongoDBPipeline(object):
     """Pipeline for saving to a MongoDB database"""
 
