@@ -79,7 +79,7 @@ get = lambda p, default: os.environ.get(p, default)
 # MongoDBPipeline setting
 MONGODB_SERVER              = get('MONGODB_SERVER', "localhost")
 MONGODB_PORT                = get('MONGODB_PORT', 27017)
-MONGODB_DB                  = get('MONGODB_DB', "ecosystem_mapping")
+MONGODB_DB                  = get('MONGODB_DB', "mapping")
 MONGODB_EXTERNAL_LINK_COLLECTION     = get('MONGODB_EXTERNAL_LINK_COLLECTION', "external_link_collection")
 MONGODB_INTERNAL_LINK_COLLECTION     = get('MONGODB_INTERNAL_LINK_COLLECTION', "internal_link_collection")
 MONGODB_TEXT_COLLECTION     = get('MONGODB_TEXT_COLLECTION', "text_collection")
