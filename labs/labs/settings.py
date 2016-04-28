@@ -71,6 +71,7 @@ DOWNLOADER_MIDDLEWARES = {
 # See http://scrapy.readthedocs.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'labs.pipelines.MongoDBPipeline': 300,
+    'labs.pipelines.PreprocessPipeline': 200,
 }
 
 get = lambda p, default: os.environ.get(p, default)
